@@ -35,7 +35,7 @@ public class ArcherStrategy implements Strategy {
      * @return
      */
     public Position moveActionDecision(GameState gameState, int myPlayerIndex) {
-        //Main.LOGGER.info("moving");
+        Main.LOGGER.info("moving");
         ArcherMoveState moveState = new ArcherMoveState(gameState, myPlayerIndex);
         return moveState.Update();
     }
@@ -47,7 +47,7 @@ public class ArcherStrategy implements Strategy {
      * @return
      */
     public int attackActionDecision(GameState gameState, int myPlayerIndex) {
-        //Main.LOGGER.info("attacking");
+        Main.LOGGER.info("attacking");
         ArcherAttackState attackState = new ArcherAttackState(gameState, myPlayerIndex);
         return attackState.Update();
     }
@@ -59,7 +59,7 @@ public class ArcherStrategy implements Strategy {
      * @return
      */
     public Item buyActionDecision(GameState gameState, int myPlayerIndex) {
-        //Main.LOGGER.info("buying");
+        Main.LOGGER.info("buying");
         ArcherBuyState buyState = new ArcherBuyState(gameState, myPlayerIndex);
         return buyState.Update();
     }
@@ -71,7 +71,7 @@ public class ArcherStrategy implements Strategy {
      * @return
      */
     public boolean useActionDecision(GameState gameState, int myPlayerIndex) {
-        //Main.LOGGER.info("using");
+        Main.LOGGER.info("using");
         ArcherUseState useState = new ArcherUseState(gameState, myPlayerIndex);
         return useState.Update();
     }
