@@ -1,6 +1,7 @@
 package starterpack.AI.MoveState;
 
 import starterpack.game.GameState;
+import starterpack.game.Position;
 
 public class WizardMoveState extends IMoveState{
 
@@ -10,14 +11,14 @@ public class WizardMoveState extends IMoveState{
     }
 
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
+    public Position Update() {
+        return new Position(0,0);
         
     }
 
     @Override
-    public void Move() {
-        // TODO Auto-generated method stub
+    public Position Move() {
+        return new Position(0,0);
         
     }
 

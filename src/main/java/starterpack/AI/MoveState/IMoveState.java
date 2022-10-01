@@ -3,6 +3,7 @@ package starterpack.AI.MoveState;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
 import starterpack.AI.AIState;
+import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
@@ -12,11 +13,12 @@ public abstract class IMoveState extends AIState{
         super(gameState, playerIndex);
         //TODO Auto-generated constructor stub
     }
-    public abstract void Move();
+    public abstract Position Update();
+    public abstract Position Move();
     public abstract void DetectTarget();
     public Position Teleport(){   
         int sum = 0;
-        for(PlayerState player:GetDangerousPlayerState(this)){
+        for(PlayerState player:Utils.GetDangerousPlayerState(this)){
             sum+=player.getStatSet().getDamage();
         }
         if(getPlayerState().getHealth()<=sum){
@@ -31,6 +33,6 @@ public abstract class IMoveState extends AIState{
                 return new Position(9,9);
             }
         }
-        
+        return Utils.GetPosition(this, this.getPlayerIndex());
     }
 }

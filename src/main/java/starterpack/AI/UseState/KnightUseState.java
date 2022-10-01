@@ -1,6 +1,7 @@
 package starterpack.AI.UseState;
 
 import starterpack.game.GameState;
+import starterpack.game.Item;
 
 public class KnightUseState extends IUseState{
 
@@ -16,7 +17,12 @@ public class KnightUseState extends IUseState{
 
     @Override
     public boolean Use() {
-        return false;
+        if(getPlayerState().getItem()==Item.SHIELD){
+            return true;
+        }
+        else{
+            return false;
+        }
         
     }
 }
