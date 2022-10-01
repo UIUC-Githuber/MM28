@@ -7,6 +7,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 import starterpack.AI.AIState;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
+import starterpack.game.Item;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
 
@@ -19,7 +20,12 @@ public abstract class IMoveState extends AIState{
     public abstract Position Move();
     public abstract void DetectTarget();
     public Position Teleport(){   
-        int sum = 0;
+        if(getPlayerState().getItem()==Item.NONE||getPlayerState().getGold()>=30){
+            //if you don't have any item or you have too much
+            return null;
+        }
+        else{
+            int sum = 0;
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
         if(playerStateList == null||playerStateList.size()==0){
             return null;
@@ -40,5 +46,6 @@ public abstract class IMoveState extends AIState{
             }
         }
         return Utils.GetPosition(this, this.getPlayerIndex());
+        }   
     }
 }
