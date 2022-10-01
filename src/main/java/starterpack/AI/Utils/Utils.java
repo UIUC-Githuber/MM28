@@ -7,6 +7,7 @@ import starterpack.game.Item;
 import starterpack.game.Position;
 import starterpack.game.PlayerState;
 import starterpack.util.*;
+import starterpack.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -270,7 +271,8 @@ public final class Utils {
                 positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
             }
         }
-        return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
+        //return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
+        return GetNearestPosition(state, positionList);
     }
 
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
@@ -471,11 +473,12 @@ public final class Utils {
         }
 
         if(NeedToFindLeastDangerous){ //find the least dangerous one if needed.
+            Main.LOGGER.info("if in loop: " + NeedToFindLeastDangerous);
             return GetLeastDangerousEnemy(CandidatesOfLeastDangerousPlayer);
         }
 
         nearestChoice = state.getGameState().
-        getPlayerStateByIndex(EnemyIndex.get(IndexOfNearestPlayer));
+        getPlayerStateByIndex(IndexOfNearestPlayer);
 
         return nearestChoice;
     }
@@ -626,13 +629,13 @@ public final class Utils {
         //get true position if player could potentially go out of range
         int x= pos.getX();
         int y = pos.getY();
-        if(x<0) {
-            pos.setX(0);
-        } 
-        if(x>9) pos.setX(9);
-        if(y<0) pos.setY(0);
-        if(y>9) pos.setY(9);
-        return pos;
+        Position p = new Position();
+        if(x<0) p.setX(0);
+        if(x>9) p.setX(9);
+        if(y<0) p.setY(0);
+        if(y>9) p.setY(9);
+        return p;
+    
     }
 
 }
