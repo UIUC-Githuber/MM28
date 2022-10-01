@@ -371,12 +371,12 @@ public final class Utils {
         resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
         switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
             case ARCHER:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             case KNIGHT:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -1); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             break;
             case WIZARD:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             break;
         }
         return resultPosition;
