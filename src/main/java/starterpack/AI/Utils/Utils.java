@@ -836,7 +836,7 @@ public final class Utils {
         }
     }
 
-    Position GetNearSpawnPosition(int playerindex){
+    public static final Position GetNearSpawnPosition(int playerindex){
         Position nearSpawnPoint = new Position();
         if(playerindex==0){
             nearSpawnPoint.setX(2);

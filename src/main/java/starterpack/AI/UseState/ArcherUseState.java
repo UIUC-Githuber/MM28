@@ -1,5 +1,6 @@
 package starterpack.AI.UseState;
 
+import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
 
 public class ArcherUseState extends IUseState{
@@ -11,12 +12,14 @@ public class ArcherUseState extends IUseState{
 
     @Override
     public boolean Update() {
-        return false;
+        return Use();
     }
 
     @Override
     public boolean Use() {
-        return true;
-        
+        if(Utils.GetDangerousPlayerState(this)!=null || Utils.GetDangerousPlayerState(this).size()>0){
+            return true;
+        }
+        return false;
     }
 }
