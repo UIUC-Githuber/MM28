@@ -40,13 +40,30 @@ public class WizardMoveState extends IMoveState{
         int ydiff = Math.abs(kbest.getY() - cPos.getY());
         int xdiff = Math.abs(kbest.getX() - cPos.getX());
         if(ydiff + xdiff <= Utils.GetSpeed(this)) return kbest;
-        
-        double slope = Math.abs(ydiff / (double) xdiff);
-        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
-        int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
-        if(cPos.getY() > kbest.getY()) rawYMov *= -1;
-        if(cPos.getX() > kbest.getX()) rawXMov *= -1;
-        Position idealPosChange = new Position(rawXMov, rawYMov);
+        int x = cPos.getX();
+        int y = cPos.getY();
+        int newx = 4;
+        int newy = 4;
+        if(x < 4 && y < 4) {
+            newx = Utils.GetSpeed(this) / 2 + x;
+            newy = Utils.GetSpeed(this) - newx + y;
+        } else if(x >5 && y < 4 ) {
+            newx = x - Utils.GetSpeed(this) / 2;
+            newy = Utils.GetSpeed(this) - newx + y;
+        } else if(x < 4 && y > 5) {
+            newx = x + Utils.GetSpeed(this) / 2;
+            newy = y - (Utils.GetSpeed(this) - newx);
+        } else {
+            newx = x - Utils.GetSpeed(this) / 2;
+            newy = y - (Utils.GetSpeed(this) - newx);
+        }
+        // double slope = Math.abs(ydiff / (double) xdiff);
+        // int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
+        // int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
+        // if(cPos.getY() > kbest.getY()) rawYMov *= -1;
+        // if(cPos.getX() > kbest.getX()) rawXMov *= -1;
+        // Position idealPosChange = new Position(rawXMov, rawYMov);
+        Position idealPosChange = new Position(newx, newy);
         return idealPosChange;
         
     }
