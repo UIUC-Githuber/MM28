@@ -11,24 +11,8 @@ public class StrategyConfig {
      */
     public static Strategy getStrategy(int playerIndex) {
 
-    //if (playerIndex == 0 ||playerIndex == 1) return new KnightStrategy();
-    //else 
-
-    if(playerIndex == 0){
-        return new ArcherStrategy();
-     }
-     if(playerIndex == 1){
-        return new WizardStrategy();
-     }
-
-     if(playerIndex == 3){
-        return new KnightStrategy();
-     }
-
-     if(playerIndex == 2){
-        return new Naive2KnightStrategy();
-     }
-     return null;
+      return new WizardStrategy();
+   
     }
 
 }

@@ -44,6 +44,6 @@ public class WizardBuyState extends IBuyState{
         return Item.HUNTER_SCOPE;
     }
     private final Item MoreDamage(){
-        return Item.STRENGTH_POTION;
+        return Item.HUNTER_SCOPE;
     }
 }
