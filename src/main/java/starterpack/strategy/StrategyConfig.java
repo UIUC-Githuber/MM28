@@ -19,11 +19,20 @@ public class StrategyConfig {
      }
 
      if(playerIndex == 1){
+<<<<<<< HEAD
+=======
+
+>>>>>>> ef2205f41fd38d7c96518af18b19ff1941194db3
         return new KnightStrategy();
      }
 
      if(playerIndex == 2){
+<<<<<<< HEAD
         return new CleverArcherStrategy();
+=======
+        return new WizardStrategy();
+
+>>>>>>> ef2205f41fd38d7c96518af18b19ff1941194db3
      }
 
      if(playerIndex == 3){
