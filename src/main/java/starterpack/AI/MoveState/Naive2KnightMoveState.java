@@ -30,6 +30,10 @@ public class Naive2KnightMoveState extends IMoveState{
         
     }
 
+    public Position TeleForced(){
+        return Utility.spawnPoints.get(getPlayerIndex());
+    }
+
 
     //Move method2, works a little bit
     public Position Move2(){
@@ -65,7 +69,7 @@ public class Naive2KnightMoveState extends IMoveState{
         else{
             SignOfDirectionY = 1;
         }
-        
+        //Decide the steps need to be taken in x and y direction
         Position DestinationNext = new Position();
         int MySpeed = this.getPlayerState().getStatSet().getSpeed();
         if(Math.abs(xdiff)>Math.abs(ydiff)){
@@ -81,6 +85,11 @@ public class Naive2KnightMoveState extends IMoveState{
             DestinationNext.setX(NewX+MyPosition.getX());
         }
 
+        //if we can't get to the crown next rount, fource tele, and just buy something.
+        if(this.getPlayerState().getGold() >= 8){ // && xdiff+ydiff >= MySpeed
+            this.TeleForced();
+        }
+        Main.LOGGER.info("The gold of bot 3 is: "+ this.getPlayerState().getGold());
         return  DestinationNext;
     }
 
