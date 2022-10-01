@@ -341,7 +341,7 @@ public final class Utils {
             int maxX = Math.min(9, ePos.getX()+range);
             int minY = Math.max(0, ePos.getY()-range);
             int maxY = Math.min(9, ePos.getY()+range);
-            if(!(cPos.getX() <= maxX && cPos.getX() >= minX && cPos.getY() <= maxY && cPos.getY() >= minY)) { // not dangered
+            if(!(cPos.getX() > minX && cPos.getX() < maxX && cPos.getY() > minY && cPos.getY() < maxY)) { // not dangered
                 if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() < minY) {
                     a = aa; b = bb; c = cc; d = dd;
                 }
