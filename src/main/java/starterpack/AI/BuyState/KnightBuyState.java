@@ -19,7 +19,7 @@ public class KnightBuyState extends IBuyState{
     @Override
     public Item Buy() {
         if(getPlayerState().getGold()>=8&&getPlayerState().getItem()==Item.NONE){
-            return Item.SPEED_POTION;
+            return Item.HUNTER_SCOPE;
         }
         else{
             return Item.NONE;

@@ -385,6 +385,64 @@ public final class Utils {
         //return GetNearestPosition(state, positionList);
         
     }
+
+    public static final Position GetAttackPositionInRangeKnight(AIState state, int playerindex){
+        Position b = GetPosition(state, playerindex); //Enemy Position
+        int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
+        int x = b.getX();
+        int y = b.getY();
+
+        Position b_min = new Position(x-attackRange, y-attackRange);
+        Position b_max = new Position(x+attackRange,  y+attackRange);
+        Main.LOGGER.info("b_min: x = "+b_min.getX()+" y = "+b_min.getY());
+        Main.LOGGER.info("b_max: x = "+b_max.getX()+" y = "+b_max.getY());
+        List<Position> positionList = new ArrayList<Position>();
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
+            positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
+        }
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+            positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+        }
+        for(int i = 0;i<positionList.size();i++){
+            Main.LOGGER.info("pos:"+i+" x = "+positionList.get(i).getX()+" y = "+positionList.get(i).getY());
+        }
+        /* 
+        if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
+            //it implyes that My position is closer to the left-up corner of the enemy position, we use manhattanDistance here
+            for(int i=0;i<=attackRange;i++){
+                //we use <= because we should also include the right corner
+                positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+                positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+            }
+        }
+        else{
+            //it implyes that My position is closer to the right-down corner of the enemy position
+            
+        }
+        */
+        Position resultPosition = GetPosition(state, state.getPlayerIndex()); //My Pos
+        resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+        switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
+            case ARCHER:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            case KNIGHT:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            break;
+            case WIZARD:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            break;
+        }
+        return resultPosition;
+        //this nearest position that can be reach by your character on once. 
+        //Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
+        //return GetNearestPosition(state, positionList);
+        
+    }
+    
     
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
     public static final Position GetPositionByLine(AIState state, Position targetPos, int speedAdd){
@@ -413,20 +471,25 @@ public final class Utils {
             //Position ePos = GetPosition(state, eIdx);
             List<Integer> info = GetEnemyInfo(eIdx, state);
             int range = info.get(1);
+            Main.LOGGER.info("ePos:" + ePos.toString());
             int minX = Math.max(0, ePos.getX()-range);
             int maxX = Math.min(9, ePos.getX()+range);
             int minY = Math.max(0, ePos.getY()-range);
             int maxY = Math.min(9, ePos.getY()+range);
+            Main.LOGGER.info("minX=" + String.valueOf(minX)+";maxX=" + String.valueOf(maxX)+";minY=" + String.valueOf(minY)+";maxY=" + String.valueOf(maxY));
+            Main.LOGGER.info("cPos.getX()=" + String.valueOf(cPos.getX()) + "; cPos.getY()=" + String.valueOf(cPos.getY()));
             if(!(cPos.getX() > minX && cPos.getX() < maxX && cPos.getY() > minY && cPos.getY() < maxY)) { // not dangered
                 if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() < minY) {
                     a = aa; b = bb; c = cc; d = dd;
                 }
                 else if(cPos.getX() >= minX && cPos.getX() <= maxX && cPos.getY() < minY) {
                     a = aa; b = bb; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(minY - cPos.getY()));
                     c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minY - cPos.getY(), Direction.DOWN);
                 }
                 else if(cPos.getX() < minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
                     a = aa; c = cc; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(minX - cPos.getX()));
                     b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minX - cPos.getX(), Direction.RIGHT);
                 }
                 else if(cPos.getX() == minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
@@ -455,6 +518,7 @@ public final class Utils {
                 }
                 else if(cPos.getX() > maxX && cPos.getY() >= minY && cPos.getY() <= maxY) {
                     a = aa; c = cc; b = bb;
+                    Main.LOGGER.info("debug:"+String.valueOf(cPos.getX() - maxX));
                     d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getX() - maxX, Direction.RIGHT);
                 }
                 else if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() > maxY) {
@@ -462,6 +526,7 @@ public final class Utils {
                 }
                 else {
                     b = bb; c = cc; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(cPos.getY() - maxY));
                     a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getY() - maxY, Direction.UP);
                 }
             }
@@ -474,6 +539,8 @@ public final class Utils {
         }
         List<RangeClass> paths = new ArrayList<>();
         paths.add(a);paths.add(b);paths.add(c);paths.add(d);
+        Main.LOGGER.info(String.valueOf(a.dist) + " " + String.valueOf(b.dist) + " " + String.valueOf(c.dist) + " " + String.valueOf(d.dist));
+        Main.LOGGER.info("---");
         return paths;
     }
 
