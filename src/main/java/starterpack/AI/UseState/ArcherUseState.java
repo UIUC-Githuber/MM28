@@ -16,7 +16,7 @@ public class ArcherUseState extends IUseState{
 
     @Override
     public boolean Use() {
-        return false;
+        return true;
         
     }
 }

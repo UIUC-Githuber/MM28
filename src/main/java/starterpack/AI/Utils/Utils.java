@@ -413,7 +413,7 @@ public final class Utils {
 
     public static final List<RangeClass> GetEscapePath(AIState state, List<List<RangeClass>> e) {
         List<RangeClass> res = GetEscapePath(state, state.getPlayerIndex());
-        for(int i : GetEnemiesIndex(state)) {
+        for(int i = 0; i < 3; ++i) { //exclude self
             List<RangeClass> lrc = e.get(i);
             for(int j = 0; j < 4; ++j)
                 if(res.get(j).dist > lrc.get(j).dist)
@@ -424,10 +424,9 @@ public final class Utils {
 
     public static final List<RangeClass> GetEscapePath(AIState state) {
         List<List<RangeClass>> e = new ArrayList<>();
-        e.add(GetEscapePath(state, 0));
-        e.add(GetEscapePath(state, 1)); 
-        e.add(GetEscapePath(state, 2));
-        e.add(GetEscapePath(state, 3));
+        for(int i : GetEnemiesIndex(state)) { //exclude self
+            e.add(GetEscapePath(state, i));
+        }
         return GetEscapePath(state, e);
     }
 

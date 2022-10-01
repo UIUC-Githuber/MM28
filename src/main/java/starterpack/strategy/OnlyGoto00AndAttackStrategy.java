@@ -49,7 +49,7 @@ public class OnlyGoto00AndAttackStrategy implements Strategy {
         }
         return CharacterClass.WIZARD;
     }
-
+ 
     public boolean useActionDecision(GameState gameState, int myPlayerIndex) {
         return true;
     }
