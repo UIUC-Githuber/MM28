@@ -455,16 +455,24 @@ public final class Utils {
             int CurrentHP = Info.get(3);
 
 
-            if(CurrentDistance<MinDistance){ //if current distance is smaller than the smallest distance,
+            if(CurrentDistance<MinDistance && !NeedToFindLeastDangerous){ //if current distance is smaller than the smallest distance,
                 MinDistance = CurrentDistance; //set the smallest distance to current value
                 IndexOfNearestPlayer = EnemyIndex.get(i); //store the index of current enemy.
                 HPofNearestPlayer = CurrentHP;          // also store the HP
             }
+            //fix1: when first two players are the same but the third has smaller dist, we again set NeedToFind to false;
+            else if(CurrentDistance<MinDistance && NeedToFindLeastDangerous){
+                NeedToFindLeastDangerous = false;
+            }
             else if(CurrentDistance == MinDistance){ //if distance are the same, compare HP
                 //HaveEqualDistance = true;
-                if(CurrentHP<HPofNearestPlayer){
+                if(CurrentHP<HPofNearestPlayer && NeedToFindLeastDangerous){
                     IndexOfNearestPlayer = EnemyIndex.get(i);
                     HPofNearestPlayer = CurrentHP;
+                }
+                //fix1: when first two players are the same but the third has smaller HP, we again set NeedToFind to false;
+                else if(CurrentHP<HPofNearestPlayer && NeedToFindLeastDangerous){
+                    NeedToFindLeastDangerous = false;
                 }
                 else if(CurrentHP == HPofNearestPlayer){ //If HP are the same, find the least dangerous one by first
                     //adding them to candidate
