@@ -23,18 +23,18 @@ public class ArcherMoveState extends IMoveState{
 
     @Override
     public Position Move() {
+        PlayerState target;
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
         if(playerStateList == null||playerStateList.size()==0){
-            PlayerState target = GetNearestAttackPlayerState(playerStateList);
-  
+            target = Utils.GetNearestPlayerState(this);
         }
         else{
-            for(PlayerState playerState:playerStateList){
-                PlayerState target = GetHighestAttackPlayerState(playerStateList);
+           
+            target = Utils.GetMostDangerousEnemy(playerStateList);
                 //int rangeArray[] = new int[4];
                 //rangeArray = Util.GetRangeBox();
                 
-                switch(target.getCharacterClass()){
+            switch(target.getCharacterClass()){
                     //if Archer, then move to the places where
                     case ARCHER:
                         break;
@@ -45,11 +45,11 @@ public class ArcherMoveState extends IMoveState{
                         break;
                     default:
                         break;
-                }
             }
+            
         }
 
-        return new Position(0,0);
+        return Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()) );
     }
 
     @Override
