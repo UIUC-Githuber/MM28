@@ -368,15 +368,24 @@ public final class Utils {
         return GetEscapePath(state, GetPosition(state), GetPosition(state, eIdx), eIdx);
     }
 
-    public static final List<RangeClass> GetEscapePath(AIState state) {
+    public static final List<RangeClass> GetEscapePath(AIState state, List<List<RangeClass>> e) {
         List<RangeClass> res = GetEscapePath(state, state.getPlayerIndex());
         for(int i : GetEnemiesIndex(state)) {
-            List<RangeClass> lrc = GetEscapePath(state, i);
+            List<RangeClass> lrc = e.get(i);
             for(int j = 0; j < 4; ++j)
                 if(res.get(j).dist > lrc.get(j).dist)
                     res.set(j, lrc.get(j));
         }
         return res;
+    }
+
+    public static final List<RangeClass> GetEscapePath(AIState state) {
+        List<List<RangeClass>> e = new ArrayList<>();
+        e.add(GetEscapePath(state, 0));
+        e.add(GetEscapePath(state, 1)); 
+        e.add(GetEscapePath(state, 2));
+        e.add(GetEscapePath(state, 3));
+        return GetEscapePath(state, e);
     }
 
     public static final PlayerState maxScore(List<PlayerState> players) {
