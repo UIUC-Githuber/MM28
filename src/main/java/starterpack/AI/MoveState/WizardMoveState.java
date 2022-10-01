@@ -27,9 +27,4 @@ public class WizardMoveState extends IMoveState{
         
     }
 
-    @Override
-    public void Teleport() {
-        // TODO Auto-generated method stub
-        
-    }
 }

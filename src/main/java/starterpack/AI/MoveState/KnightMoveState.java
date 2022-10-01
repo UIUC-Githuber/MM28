@@ -27,9 +27,5 @@ public class KnightMoveState extends IMoveState{
         
     }
 
-    @Override
-    public void Teleport() {
-        // TODO Auto-generated method stub
-        
-    }
+
 }
