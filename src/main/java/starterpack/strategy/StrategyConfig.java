@@ -14,21 +14,22 @@ public class StrategyConfig {
     //if (playerIndex == 0 ||playerIndex == 1) return new KnightStrategy();
     //else 
 
-    if(playerIndex == 0){
-        return new WizardStrategy2();
-     }
-     if(playerIndex == 1){
-        return new Naive2KnightStrategy();
+      if(playerIndex == 0){
+        return new WizardStrategy();
      }
 
-     if(playerIndex == 3){
+     if(playerIndex == 1){
         return new KnightStrategy();
      }
 
      if(playerIndex == 2){
         return new CleverArcherStrategy();
      }
-     return null;
-    }
+
+     if(playerIndex == 3){
+        return new Naive2KnightStrategy();
+     }
+   return null;
+     }
 
 }

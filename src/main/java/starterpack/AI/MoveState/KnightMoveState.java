@@ -8,7 +8,10 @@ import java.util.Map;
 import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 import starterpack.AI.Utils.range.RangeClass;
+import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
+import starterpack.game.Item;
+import starterpack.game.PlayerState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
 
@@ -21,13 +24,23 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        //Position tele = Teleport();
-        //if (tele != null) return tele;
+        if(getPlayerState().getGold() >= 8 && getPlayerState().getItem() == Item.NONE && getPlayerState().getPosition().equals(Utility.spawnPoints.get(getPlayerIndex()))) {
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
         return Move();
     }
 
     @Override
+    public Position Teleport() {
+        if(getPlayerState().getItem()==Item.NONE && getPlayerState().getGold()>=8){
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
+        return super.Teleport();
+    }
+
+    @Override
     public Position Move() {
+        Main.LOGGER.info("\n\n\n");
         //LogManager.getLogger(Main.class.getName()).info("move");
         // TODO Auto-generated method stub
         Position cPos = Utils.GetPosition(this, getPlayerIndex());
@@ -40,10 +53,10 @@ public class KnightMoveState extends IMoveState{
             kbest = new Position(5,4);
             break;
             case 2:
-            kbest = new Position(4,5);
+            kbest = new Position(5,5);
             break;
             case 3:
-            kbest = new Position(5,5);
+            kbest = new Position(4,5);
             break;
         }
         int ydiff = Math.abs(kbest.getY() - cPos.getY());
@@ -67,15 +80,23 @@ public class KnightMoveState extends IMoveState{
             //Main.LOGGER.info("rawXMov=" + String.valueOf(rawXMov));
             //Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
         }
-        if(cPos.getY() > kbest.getY()) rawYMov *= -1;
-        if(cPos.getX() > kbest.getX()) rawXMov *= -1;
+        rawYMov = Math.abs(rawYMov);
+        rawXMov = Math.abs(rawXMov);
+        if(cPos.getY() > kbest.getY()) rawYMov = -1 * rawYMov;
+        if(cPos.getX() > kbest.getX()) rawXMov = -1 * rawXMov;
         Main.LOGGER.info("rawXMov=" + String.valueOf(rawXMov));
         Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
+        PlayerState target = Utils.GetNearestPlayerState(this);
+        //Position resultPosition = Utils.GetAttackPositionInRangeKnight(this, Utils.Getplayerindex(target, getGameState()));
+        //return resultPosition;
+        return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        /*
         //Position idealPosChange = new Position(rawXMov, rawYMov);
         // Get Other 3 Players' Position
         Map<Integer, List<Integer>> infoSet = new HashMap<>();
         List<List<RangeClass>> rcList = new ArrayList<>();
         // Predict the next movement of other players and find the escape path
+        
         for(int i : Utils.GetEnemiesIndex(this)) {
             Position ePos = Utils.GetPosition(this, i);
             List<Integer> info = Utils.GetEnemyInfo(i, this);
@@ -88,19 +109,25 @@ public class KnightMoveState extends IMoveState{
             double eSlope = Math.abs(eYdiff / (double) (eXdiff));
             int eRawYMov = Math.max(eYdiff, (int)Math.round(eSlope * Utils.GetSpeed(this, i)));
             int eRawXMov = Math.max(eXdiff, Utils.GetSpeed(this, i) - eRawYMov);
-            if (ePos.getY() > cPos.getY()) rawYMov *= -1;
-            if (ePos.getX() > cPos.getX()) rawXMov *= -1;
+            if (ePos.getY() > cPos.getY()) eRawYMov *= -1;
+            if (ePos.getX() > cPos.getX()) eRawXMov *= -1;
             Position predicted = new Position(ePos.getX() + eRawXMov, ePos.getY() + eRawYMov);
             List<RangeClass> ep = Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
             rcList.add(ep);
         }
-        List<RangeClass> rcfinal = Utils.GetEscapePath(this, rcList);
+        List<RangeClass> rcfinal = Utils.GetEscapePath(this);
+        //List<RangeClass> rcfinal = Utils.GetEscapePath(this, rcList);
+        
+        //Main.LOGGER.info(rcfinal.get(0).dist);
+        //Main.LOGGER.info(rcfinal.get(1).dist);
+        //Main.LOGGER.info(rcfinal.get(2).dist);
+        //Main.LOGGER.info(rcfinal.get(3).dist);
         // Unstable Move: (Prob 0.4) Ignore the dangers
-        if (Math.random() * 10 <= 6) {
-            //Main.LOGGER.info("idealPos : " + idealPosChange.toString());
-            Main.LOGGER.info("------");
-            return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
-        }
+        //if (Math.random() * 10 <= 20) {
+        //    //Main.LOGGER.info("idealPos : " + idealPosChange.toString());
+        //    Main.LOGGER.info("cPosX: " + String.valueOf(cPos.getX()) + "rxm: " + String.valueOf(rawXMov) + " udt: " + String.valueOf(cPos.getX() + rawXMov));
+        //    return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        //}
         // Stable Move: Follow the boarder first, then the target
         //Main.LOGGER.info("HERE STABLE MOVE");
         String msg;
@@ -108,22 +135,26 @@ public class KnightMoveState extends IMoveState{
             msg = "Compare b: " + String.valueOf(rawXMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(-rcfinal.get(3).dist);
-                rawXMov = Math.min(rawXMov, -rcfinal.get(3).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(3).ps.getStatSet().getDamage())
+                    rawXMov = Math.min(rawXMov, -rcfinal.get(3).dist);
             }
             else {
                 msg += String.valueOf(rcfinal.get(1).dist);
-                rawXMov = Math.min(rawXMov, rcfinal.get(1).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(1).ps.getStatSet().getDamage())
+                    rawXMov = Math.min(rawXMov, rcfinal.get(1).dist);
             }
         }
         else { // Compare d
             msg = "Compare d: " + String.valueOf(rawXMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(rcfinal.get(1).dist);
-                rawXMov = Math.max(rawXMov, rcfinal.get(1).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(1).ps.getStatSet().getDamage())
+                    rawXMov = Math.max(rawXMov, rcfinal.get(1).dist);
             }
             else {
                 msg += String.valueOf(-rcfinal.get(3).dist);
-                rawXMov = Math.max(rawXMov, -rcfinal.get(3).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(3).ps.getStatSet().getDamage())
+                    rawXMov = Math.max(rawXMov, -rcfinal.get(3).dist);
             }
         }
 
@@ -131,27 +162,33 @@ public class KnightMoveState extends IMoveState{
             msg += " ; Compare c: " + String.valueOf(rawYMov) + " and ";
             if(rcfinal.get(0).dist + rcfinal.get(2).dist <= 0) {
                 msg += String.valueOf(-rcfinal.get(0).dist);
-                rawYMov = Math.min(rawYMov, -rcfinal.get(0).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(0).ps.getStatSet().getDamage())
+                    rawYMov = Math.min(rawYMov, -rcfinal.get(0).dist);
             }
             else {
                 msg += String.valueOf(rcfinal.get(2).dist);
-                rawYMov = Math.min(rawYMov, rcfinal.get(2).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(2).ps.getStatSet().getDamage())
+                    rawYMov = Math.min(rawYMov, rcfinal.get(2).dist);
             }
         }
         else { // Compare a
             msg += " ; Compare a: " + String.valueOf(rawYMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(rcfinal.get(2).dist);
-                rawYMov = Math.max(rawYMov, rcfinal.get(2).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(2).ps.getStatSet().getDamage())
+                    rawYMov = Math.max(rawYMov, rcfinal.get(2).dist);
             }
             else {
                 msg += String.valueOf(-rcfinal.get(0).dist);
-                rawYMov = Math.max(rawYMov, -rcfinal.get(0).dist);
+                if(getPlayerState().getHealth() / 2.0 <= rcfinal.get(0).ps.getStatSet().getDamage())
+                    rawYMov = Math.max(rawYMov, -rcfinal.get(0).dist);
             }
         }
-        Main.LOGGER.info("------");
-        //Main.LOGGER.info(msg);
+        
+        Main.LOGGER.info("x, y = " + String.valueOf(rawXMov) + " " + String.valueOf(rawYMov));
+
         return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        */
     }
 
     @Override
