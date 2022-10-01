@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
+import starterpack.Main;
 import starterpack.AI.AIState;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
@@ -27,16 +28,16 @@ public abstract class IMoveState extends AIState{
         }
         else{
             int sum = 0;
-        List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
-        if(playerStateList == null||playerStateList.size()==0){
-            return null;
-        }
-        for(PlayerState player:playerStateList){
-            sum+=player.getStatSet().getDamage();
-        }
-        if(getPlayerState().getHealth()<=sum){
-            return Utility.spawnPoints.get(getPlayerIndex());
-        }
+            List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
+            if(playerStateList == null||playerStateList.size()==0){
+                return null;
+            }
+            for(PlayerState player:playerStateList){
+                sum+=player.getStatSet().getDamage();
+            }
+            if(getPlayerState().getHealth()<=sum){
+                return Utility.spawnPoints.get(getPlayerIndex());
+            }
         return null;
         }   
     }
