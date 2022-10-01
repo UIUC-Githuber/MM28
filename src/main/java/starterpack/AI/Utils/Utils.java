@@ -634,6 +634,4 @@ public final class Utils {
         if(y>9) pos.setY(9);
         return pos;
     }
-
 }
-
