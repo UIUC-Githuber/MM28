@@ -31,7 +31,7 @@ public class KnightStrategy implements Strategy {
      * @return
      */
     public Position moveActionDecision(GameState gameState, int myPlayerIndex) {
-        Main.LOGGER.info("moving");
+        //Main.LOGGER.info("moving");
         KnightMoveState moveState = new KnightMoveState(gameState, myPlayerIndex);
         return moveState.Update();
     }
@@ -43,7 +43,7 @@ public class KnightStrategy implements Strategy {
      * @return
      */
     public int attackActionDecision(GameState gameState, int myPlayerIndex) {
-        Main.LOGGER.info("attacking");
+        //Main.LOGGER.info("attacking");
         KnightAttackState attackState = new KnightAttackState(gameState, myPlayerIndex);
         return attackState.Update();
     }
@@ -55,7 +55,7 @@ public class KnightStrategy implements Strategy {
      * @return
      */
     public Item buyActionDecision(GameState gameState, int myPlayerIndex) {
-        Main.LOGGER.info("buying");
+        //Main.LOGGER.info("buying");
         KnightBuyState buyState = new KnightBuyState(gameState, myPlayerIndex);
         return buyState.Update();
     }
@@ -67,7 +67,7 @@ public class KnightStrategy implements Strategy {
      * @return
      */
     public boolean useActionDecision(GameState gameState, int myPlayerIndex) {
-        Main.LOGGER.info("using");
+        //Main.LOGGER.info("using");
         KnightUseState useState = new KnightUseState(gameState, myPlayerIndex);
         return useState.Update();
     }
