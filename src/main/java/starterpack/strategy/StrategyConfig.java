@@ -13,5 +13,5 @@ public class StrategyConfig {
     //else 
 
     return new ArcherStrategy();
-
+    }
 }
