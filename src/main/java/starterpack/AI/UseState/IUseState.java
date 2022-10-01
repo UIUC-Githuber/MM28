@@ -8,5 +8,7 @@ public abstract class IUseState extends AIState{
         super(gameState, playerIndex);
     }
 
-    public abstract void Use(); // Note: Should Check whether item is useable.
+    public abstract boolean Use(); // Note: Should Check whether item is useable.
+    public abstract boolean Update();
+
 }

@@ -11,13 +11,13 @@ public class ArcherAttackState extends IAttackState{
 
     @Override
     public int Update() {
-        // TODO Auto-generated method stub
+        return 0;
         
     }
 
     @Override
-    public void Attack() {
-        // TODO Auto-generated method stub
+    public int Attack() {
+        return 0;
         
     }
 }

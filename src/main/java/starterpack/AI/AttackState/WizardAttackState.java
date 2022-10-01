@@ -10,14 +10,12 @@ public class WizardAttackState extends IAttackState{
     }
 
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
-        
+    public int Update() {
+        return 0;        
     }
 
     @Override
-    public void Attack() {
-        // TODO Auto-generated method stub
-        
+    public int Attack() {
+        return 0;
     }
 }

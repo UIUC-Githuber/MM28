@@ -12,12 +12,12 @@ public class ArcherBuyState extends IBuyState {
 
     @Override
     public Item Update() {
-        // TODO Auto-generated method stub
+        return Item.NONE;
     }
 
     @Override
     public Item Buy() {
-        // TODO Auto-generated method stub
+        return Item.NONE;
         
     }
 }

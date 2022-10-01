@@ -8,16 +8,14 @@ public class WizardUseState extends IUseState{
         super(gameState, playerIndex);
         //TODO Auto-generated constructor stub
     }
-
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
-        
+    public boolean Update() {
+        return false;
     }
 
     @Override
-    public void Use() {
-        // TODO Auto-generated method stub
+    public boolean Use() {
+        return false;
         
     }
 }
