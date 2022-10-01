@@ -9,7 +9,7 @@ import starterpack.AI.*;
 import starterpack.AI.AttackState.KnightAttackState;
 import starterpack.AI.BuyState.KnightBuyState;
 import starterpack.AI.MoveState.IMoveState;
-import starterpack.AI.MoveState.KnightMoveState;
+import starterpack.AI.MoveState.NaiveKnightMoveState;
 import starterpack.AI.UseState.KnightUseState;;
 
 public class KnightStrategy implements Strategy {
@@ -32,7 +32,7 @@ public class KnightStrategy implements Strategy {
      */
     public Position moveActionDecision(GameState gameState, int myPlayerIndex) {
         //Main.LOGGER.info("moving");
-        KnightMoveState moveState = new KnightMoveState(gameState, myPlayerIndex);
+        NaiveKnightMoveState moveState = new NaiveKnightMoveState(gameState, myPlayerIndex);
         return moveState.Update();
     }
 
