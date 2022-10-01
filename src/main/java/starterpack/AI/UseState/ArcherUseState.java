@@ -2,6 +2,8 @@ package starterpack.AI.UseState;
 
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
+import starterpack.game.Position;
+import starterpack.util.Utility;
 
 public class ArcherUseState extends IUseState{
 
@@ -17,9 +19,10 @@ public class ArcherUseState extends IUseState{
 
     @Override
     public boolean Use() {
-        if(Utils.GetDangerousPlayerState(this)!=null || Utils.GetDangerousPlayerState(this).size()>0){
-            return true;
+        Position myPosition = Utils.GetPosition(this);
+        if(Utility.spawnPoints.get(getPlayerIndex()).equals(myPosition)){
+            return false;
         }
-        return false;
+        return true;
     }
 }
