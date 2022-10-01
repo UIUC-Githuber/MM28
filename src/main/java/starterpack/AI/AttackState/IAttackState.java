@@ -9,4 +9,6 @@ public abstract class IAttackState extends AIState{
         //TODO Auto-generated constructor stub
     }
 
+    public abstract int Update();
+    public abstract int Attack();
 }

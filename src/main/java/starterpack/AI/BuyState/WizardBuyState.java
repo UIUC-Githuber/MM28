@@ -1,6 +1,7 @@
 package starterpack.AI.BuyState;
 
 import starterpack.game.GameState;
+import starterpack.game.Item;
 
 public class WizardBuyState extends IBuyState{
 
@@ -10,14 +11,13 @@ public class WizardBuyState extends IBuyState{
     }
 
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
+    public Item Update() {
+        return Item.NONE;
         
     }
 
     @Override
-    public void Buy() {
-        // TODO Auto-generated method stub
-        
+    public Item Buy() {
+        return Item.NONE;
     }
 }

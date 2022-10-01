@@ -6,6 +6,11 @@ import starterpack.AI.Utils.Utils;
 public class KnightAttackState extends IAttackState{
 
 
+    public KnightAttackState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public int Update() {
         // TODO Auto-generated method stub
@@ -14,14 +19,13 @@ public class KnightAttackState extends IAttackState{
     }
 
     @Override
-
-        // TODO Auto-generated method stub
-        GameState gs = getGameState();
-        if(Utils.DetectRange(this) != null) {
-            return Utils.Getplayerindex (Utils.DetectRange(this), gs);
-        }
-        return -1;
-
-        
+    public int Attack(){
+         // TODO Auto-generated method stub
+         GameState gs = getGameState();
+         if(Utils.DetectRange(this) != null) {
+             return Utils.Getplayerindex (Utils.DetectRange(this), gs);
+         }
+         return -1;
+         
     }
 }
