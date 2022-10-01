@@ -8,6 +8,7 @@ import java.util.Map;
 import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
+import starterpack.game.Item;
 import starterpack.game.Position;
 import starterpack.util.Utility;
 import org.apache.logging.log4j.Level;
@@ -86,8 +87,8 @@ public class Naive2KnightMoveState extends IMoveState{
         }
 
         //if we can't get to the crown next rount, fource tele, and just buy something.
-        if(this.getPlayerState().getGold() >= 8){ // && xdiff+ydiff >= MySpeed
-            this.TeleForced();
+        if(this.getPlayerState().getGold() >= 8 && xdiff+ydiff >= MySpeed && getPlayerState().getItem()==Item.NONE){ 
+            return this.TeleForced();
         }
         Main.LOGGER.info("The gold of bot 3 is: "+ this.getPlayerState().getGold());
         return  DestinationNext;
