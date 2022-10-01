@@ -12,7 +12,7 @@ public class WizardUseState extends IUseState{
     }
     @Override
     public boolean Update() {
-        return false;
+        return Use();
     }
 
     @Override
