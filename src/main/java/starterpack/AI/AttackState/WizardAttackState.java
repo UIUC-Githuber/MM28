@@ -20,6 +20,7 @@ public class WizardAttackState extends IAttackState{
         return Attack();   
     }
 
+    
     @Override
     public int Attack() {
         GameState gs = getGameState();

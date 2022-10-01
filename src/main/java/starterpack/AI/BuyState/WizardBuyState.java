@@ -20,7 +20,7 @@ public class WizardBuyState extends IBuyState{
     public Item Buy() {
         if(getPlayerState().getGold()>=8 && getPlayerState().getItem()==Item.NONE){
             
-            return MoreDamage();
+            return MoreRange();
         }
         return Item.NONE;
         /* 
