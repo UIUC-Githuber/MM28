@@ -24,7 +24,6 @@ public class KnightMoveState extends IMoveState{
         Position tele = Teleport();
         if (tele != null) return tele;
         return Move();
-        
     }
 
     @Override

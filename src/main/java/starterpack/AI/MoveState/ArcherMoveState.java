@@ -11,6 +11,7 @@ import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
+import starterpack.util.Utility;
 
 public class ArcherMoveState extends IMoveState {
 
@@ -21,14 +22,23 @@ public class ArcherMoveState extends IMoveState {
 
     @Override
     public Position Update() {
+        Position tele = this.Teleport();
+        if (tele != null) return tele;
         
         return Move();
+    }
+
+    @Override
+    public Position Teleport(){
+        if(getPlayerState().getGold()>=8){
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
+        return super.Teleport();
 
     }
 
     @Override
     public Position Move() {
-        
         Position myPosition = Utils.GetPosition(this);
         Position resultPosition = myPosition;
         List<PlayerState> dangerousPlayerStateList = Utils.GetDangerousPlayerState(this);
