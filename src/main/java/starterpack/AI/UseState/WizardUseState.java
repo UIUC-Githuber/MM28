@@ -12,17 +12,18 @@ public class WizardUseState extends IUseState{
     }
     @Override
     public boolean Update() {
-        return Use();
+        // return Use();
+        return false;
     }
 
     @Override
     public boolean Use() {
-        if(getPlayerState().getItem() != Item.NONE) {
-            if(!Utils.DetectRangeReturnList(this).isEmpty()) {
-                return true;
+        // if(getPlayerState().getItem() != Item.NONE) {
+        //     if(!Utils.DetectRangeReturnList(this).isEmpty()) {
+        //         return true;
 
-            }
-        }
+        //     }
+        // }
             
         return false;
         
