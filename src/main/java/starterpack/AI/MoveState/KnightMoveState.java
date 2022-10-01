@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.chainsaw.Main;
-
+import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
 import starterpack.game.Position;
@@ -25,6 +24,8 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Update() {
+        //Position tele = Teleport();
+        //if (tele != null) return tele;
         return Move();
         
     }
@@ -34,13 +35,29 @@ public class KnightMoveState extends IMoveState{
         //LogManager.getLogger(Main.class.getName()).info("move");
         // TODO Auto-generated method stub
         Position cPos = Utils.GetPosition(this, getPlayerIndex());
-        int ydiff = 4 - cPos.getY();
-        int xdiff = 4 - cPos.getX();
+        Position kbest = null;
+        switch (getPlayerIndex()){
+            case 0:
+            kbest = new Position(4,4);
+            break;
+            case 1:
+            kbest = new Position(5,4);
+            break;
+            case 2:
+            kbest = new Position(4,5);
+            break;
+            case 3:
+            kbest = new Position(5,5);
+            break;
+        }
+        int ydiff = Math.abs(kbest.getY() - cPos.getY());
+        int xdiff = Math.abs(kbest.getX() - cPos.getX());
         double slope = Math.abs(ydiff / (double) xdiff);
-        int rawYMov = Math.max(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
-        int rawXMov = Math.max(xdiff, Utils.GetSpeed(this) - rawYMov);
-        if(cPos.getY() > 4) rawYMov *= -1;
-        if(cPos.getX() > 4) rawXMov *= -1;
+        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
+        int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
+        if(cPos.getY() > kbest.getY()) rawYMov *= -1;
+        if(cPos.getX() > kbest.getX()) rawXMov *= -1;
+        Main.LOGGER.info("[" + cPos.getX() + "," + cPos.getY() + "]" + " -> cb[" + String.valueOf(rawXMov) + "," + String.valueOf(rawYMov) + "]");
         return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
         // Get Other 3 Players' Position
         /*
