@@ -165,6 +165,47 @@ public final class Utils {
         return index;
     }
 
+    public static final List<PlayerState> GetDangerousPlayerState(AIState state){
+        List<PlayerState> DangerPlayer = new ArrayList<>();
+        
+        //敌方攻击距离 >= 我方与敌方的距离 = 把此player加入list
+        List<Integer> EnemyIndex = GetEnemiesIndex(state);
+        
+        
+        for(int i=0; i<3; i++){
+            //get attack range of the enemy with index x = EnemyIndex.get(i);
+            int Range = state.getGameState().getPlayerStateByIndex(EnemyIndex.get(i)).getStatSet().getRange();
+            List<Integer> Info = GetEnemyInfo(EnemyIndex.get(i), state); //get 此敌方info
+            int Dist  = Info.get(0);       //从敌方info中 get我方与此敌方距离
+            if(Range>=Dist){                     //如果我方在敌方攻击距离内，将此敌人加入DangerPlayer List
+                DangerPlayer.add(state.getGameState().getPlayerStateByIndex(EnemyIndex.get(i)));
+            }
+        }
+
+        return DangerPlayer;
+    }
+
+    //Get speed of player with index i
+    public static final int GetSpeed(AIState state, int i){
+        int SpeedOfPlayer = state.getGameState().getPlayerStateByIndex(i).getStatSet().getSpeed();
+        return SpeedOfPlayer;
+    }
+
+    //Get speed of current player
+    public static final int GetSpeed(AIState state){
+        int SpeedOfPlayer = state.getGameState().getPlayerStateByIndex(state.getPlayerIndex()).getStatSet().getSpeed();
+        return SpeedOfPlayer;
+    }
+
+
+
+
+    public static final Position GetPosition(AIState state, int index) {
+        //获取player[index]的position
+        GameState gs = state.getGameState();
+        return gs.getPlayerStateByIndex(index).getPosition();
+    }
+
     
 }
 
