@@ -21,12 +21,14 @@ public class ArcherMoveState extends IMoveState {
 
     @Override
     public Position Update() {
+        
         return Move();
 
     }
 
     @Override
     public Position Move() {
+        
         Position myPosition = Utils.GetPosition(this);
         Position resultPosition = myPosition;
         List<PlayerState> dangerousPlayerStateList = Utils.GetDangerousPlayerState(this);

@@ -53,7 +53,7 @@ public class ArcherAttackState extends IAttackState{
                 return Utils.Getplayerindex(killingbots.get(0), getGameState()); 
             } else {
                 //attack greatest damage if not in other's range
-                return Utils.Getplayerindex(Utils.maxDamage(killingbots), getGameState()); 
+                return Utils.Getplayerindex(Utils.maxDamage(fatalbots), getGameState()); 
             }
             
             
