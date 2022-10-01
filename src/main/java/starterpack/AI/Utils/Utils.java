@@ -770,6 +770,38 @@ public final class Utils {
         return resultPos;
     
     }
+    public static final boolean IfCenterInRange(AIState state) {
+        //get true position if player could potentially go out of range
+        int range = state.getPlayerState().getStatSet().getRange();
+        int x = state.getPlayerState().getPosition().getX();
+        int y = state.getPlayerState().getPosition().getY();
+        if ((x-range<=4 && x+range>=5) && (y-range<=4 && y+range>=5)  ) return true;
+        return false;
+    
+    }
+    public static final boolean IfEnemiesInCenter(AIState state) {
+        List<PlayerState> list_ = GetEnemies(state);
+        for(int i = 0 ; i < list_.size(); i++) {
+            int x = list_.get(i).getPosition().getX();
+            int y = list_.get(i).getPosition().getY();
+            if((x ==4 || x == 5) && (y==4 && y==5)) return true;
+        }
+        return false;
+
+    }
+    public static final List<PlayerState> IfEnemiesInCenterRetureList(AIState state) {
+        if(!IfEnemiesInCenter(state)) return null;
+        List<PlayerState> list_ = GetEnemies(state);
+        List<PlayerState> mylist_ = new ArrayList<PlayerState>();
+        for(int i = 0 ; i < list_.size(); i++) {
+            int x = list_.get(i).getPosition().getX();
+            int y = list_.get(i).getPosition().getY();
+            if((x ==4 || x == 5) && (y==4 && y==5)) mylist_.add(list_.get(i));
+        }
+        return mylist_;
+
+    }
+
     public static final PlayerState GetNearestPlayerState2(AIState state){
         List<PlayerState> otherplayers = GetEnemies(state);
         List<Integer> range = new ArrayList<Integer>();

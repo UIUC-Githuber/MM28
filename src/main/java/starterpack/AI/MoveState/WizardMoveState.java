@@ -31,6 +31,7 @@ public class WizardMoveState extends IMoveState{
 
     @Override
     public Position Move() {
+        
         Position cPos = Utils.GetPosition(this, getPlayerIndex());
         Position kbest = null;
         switch (getPlayerIndex()){
@@ -69,6 +70,9 @@ public class WizardMoveState extends IMoveState{
         Position idealPosChange = new Position(x + rawXMov, y + rawYMov);
         // Position idealPosChange = new Position(newx, newy);
         return idealPosChange;
+        
+
+        
         
     }
 
