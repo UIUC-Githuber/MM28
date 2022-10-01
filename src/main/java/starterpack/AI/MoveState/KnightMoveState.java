@@ -10,10 +10,6 @@ import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.Configurator;
 
 public class KnightMoveState extends IMoveState{
 
@@ -24,8 +20,8 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        //Position tele = Teleport();
-        //if (tele != null) return tele;
+        Position tele = Teleport();
+        if (tele != null) return tele;
         return Move();
         
     }
@@ -57,25 +53,23 @@ public class KnightMoveState extends IMoveState{
         int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
         if(cPos.getY() > kbest.getY()) rawYMov *= -1;
         if(cPos.getX() > kbest.getX()) rawXMov *= -1;
-        Main.LOGGER.info("[" + cPos.getX() + "," + cPos.getY() + "]" + " -> cb[" + String.valueOf(rawXMov) + "," + String.valueOf(rawYMov) + "]");
-        return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        Position idealPosChange = new Position(rawXMov, rawYMov);
         // Get Other 3 Players' Position
-        /*
         List<Integer> safePlayerSet = new ArrayList<>();
         Map<Integer, List<Integer>> infoSet = new HashMap<>();
         Position posMaxMove = new Position(0,0);
         for(int i : Utils.GetEnemiesIndex(this)) {
-            Position ePos = Utils.GetPosition(i);
+            Position ePos = Utils.GetPosition(this, i);
             List<Integer> info = Utils.GetEnemyInfo(i, this);
             infoSet.put(i, info);
             int atk = info.get(1);
             int range = info.get(2);
             // get the slope
-            int ydiff = ePos.getY() - cPos.getY();
-            int xdiff = ePos.getX() - cPos.getX();
-            double slope = Math.abs(ydiff / (double) (xdiff));
-            int rawYMov = Math.max(ydiff, (int)Math.round(slope * Utils.GetSpeed(i)));
-            int rawXMov = Math.max(xdiff, Utils.GetSpeed(i) - enemyMove.getY());
+            int eYdiff = ePos.getY() - cPos.getY();
+            int eXdiff = ePos.getX() - cPos.getX();
+            double eSlope = Math.abs(eYdiff / (double) (eXdiff));
+            int eRawYMov = Math.max(eYdiff, (int)Math.round(slope * Utils.GetSpeed(this, i)));
+            int eRawXMov = Math.max(eXdiff, Utils.GetSpeed(this, i) - eRawYMov);
             if (ePos.getY() > cPos.getY()) rawYMov *= -1;
             if (ePos.getX() > cPos.getX()) rawXMov *= -1;
             Position predicted = new Position(ePos.getX() + rawXMov, ePos.getY() + rawYMov);
@@ -90,7 +84,7 @@ public class KnightMoveState extends IMoveState{
         if(!safePlayerSet.isEmpty()) {
 
         }
-        */
+        return new Position(0,0); //TODO
     }
 
     @Override
