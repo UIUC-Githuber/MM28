@@ -32,7 +32,7 @@ public class NaiveArcherMoveState extends IMoveState {
         Main.LOGGER.info("playerid = " + Utils.Getplayerindex(target, getGameState()));
         Position targePosition = Utils.GetPosition(this, Utils.Getplayerindex(target, getGameState()));
         Main.LOGGER.info("moveTo: x = " + targePosition.getX() + " y = " + targePosition.getY());
-        Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
+        Position result = Utils.GetAttackPositionInRangeArcher(this, Utils.Getplayerindex(target, getGameState()));
         return result;
     }
 

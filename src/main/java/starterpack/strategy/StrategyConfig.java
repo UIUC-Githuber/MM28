@@ -15,18 +15,20 @@ public class StrategyConfig {
     //else 
 
     if(playerIndex == 0){
-        return new ArcherStrategy();
-     }
-     if(playerIndex == 2){
         return new WizardStrategy();
      }
 
      if(playerIndex == 1){
-        return new KnightStrategy();
+        return new WizardStrategy();
+     }
+
+     if(playerIndex == 2){
+        return new WizardStrategy();
      }
 
      if(playerIndex == 3){
-        return new Naive2KnightMoveStrategy();
+        return new WizardStrategy();
+
      }
      return null;
     }
