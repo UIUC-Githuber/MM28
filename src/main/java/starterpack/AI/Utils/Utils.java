@@ -859,6 +859,22 @@ public final class Utils {
 
     }
 
+    static final List<PlayerState> GetAllPlayerStateInRange(AIState state){
+        List<PlayerState> PlayerInRange = new ArrayList<>();
+        List<Integer> EnemiesIndex =  GetEnemiesIndex(state);
+        int currentIndex;
+        int currentDist;
 
+        for(int i=0; i<3; i++){
+            currentIndex = EnemiesIndex.get(i);
+            List<Integer> info = GetEnemyInfo(currentIndex, state);
+            currentDist = info.get(0);
+            if(currentDist <= state.getPlayerState().getStatSet().getRange()){
+                PlayerInRange.add(state.getGameState().getPlayerStateByIndex(currentIndex));
+            }
+        }
+        
+        return PlayerInRange;        
+    }
     
 }
