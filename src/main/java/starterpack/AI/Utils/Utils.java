@@ -529,6 +529,18 @@ public final class Utils {
         }
         return minplayer;
     }
+    public static final PlayerState minHealth(List<PlayerState> players) {
+        //return player with minRange
+        int min_ = players.get(0).getHealth();
+        PlayerState minplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getHealth() < min_) {
+                min_ = players.get(i).getHealth();
+                minplayer = players.get(i);
+            }
+        }
+        return minplayer;
+    }
     public static final PlayerState maxRange(List<PlayerState> players) {
         //return player with maxscore
         int max_ = players.get(0).getStatSet().getRange();
@@ -651,6 +663,39 @@ public final class Utils {
         if(y>9) return new Position(x, 9);
         return pos;
     
+    }
+    public static final PlayerState GetNearestPlayerState2(AIState state){
+        List<PlayerState> otherplayers = GetEnemies(state);
+        List<Integer> range = new ArrayList<Integer>();
+        List<Integer> blood = new ArrayList<Integer>();
+        List<PlayerState> bloodplayers = new ArrayList<PlayerState>();
+        for (int i = 0; i< otherplayers.size(); i++) {
+            range.add(otherplayers.get(i).getStatSet().getRange());
+        }
+        int min_ = Collections.min(range);
+        int count = 0;
+        for(int i = 0; i< otherplayers.size() ; i++) {
+            if(range.get(i) == min_)  {
+                count++;
+                blood.add(otherplayers.get(i).getHealth());
+                bloodplayers.add(otherplayers.get(i));
+            }
+        }
+        if(count > 1) {
+            int countdamage = 0;
+            int minblood = Collections.min(blood);
+            for(int i = 0; i < count; i++) {
+                if(blood.get(i) == minblood)  
+                    countdamage++;
+            }
+            if(countdamage >1) {
+                return minHealth(bloodplayers);
+            } else {
+                return minDamage(bloodplayers);
+            }
+        } else  {
+            return minRange(otherplayers);
+        }
     }
 
 }
