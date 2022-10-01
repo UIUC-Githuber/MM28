@@ -21,8 +21,8 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        Position tele = Teleport();
-        if (tele != null) return tele;
+        //Position tele = Teleport();
+        //if (tele != null) return tele;
         return Move();
         
     }
@@ -49,12 +49,30 @@ public class KnightMoveState extends IMoveState{
         }
         int ydiff = Math.abs(kbest.getY() - cPos.getY());
         int xdiff = Math.abs(kbest.getX() - cPos.getX());
-        double slope = Math.abs(ydiff / (double) xdiff);
-        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
-        int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
+        int rawYMov, rawXMov;
+        Main.LOGGER.info("player Position = " + cPos.toString());
+        Main.LOGGER.info("Diffs = (" + String.valueOf(xdiff) + "," + String.valueOf(ydiff) + ")");
+
+        if (xdiff == 0) {
+            Main.LOGGER.info("ydiff = " + String.valueOf(ydiff));
+            rawYMov = Math.min(ydiff, Utils.GetSpeed(this));
+            rawXMov = 0;
+        }
+        else{
+            double slope = Math.abs(ydiff / (double) xdiff);
+            Main.LOGGER.info("slope=" + String.valueOf(slope));
+            Main.LOGGER.info("speed=" + Utils.GetSpeed(this));
+            rawYMov = Math.min(ydiff, (int)Math.floor(slope * Utils.GetSpeed(this)));
+            //Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
+            rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
+            //Main.LOGGER.info("rawXMov=" + String.valueOf(rawXMov));
+            //Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
+        }
         if(cPos.getY() > kbest.getY()) rawYMov *= -1;
         if(cPos.getX() > kbest.getX()) rawXMov *= -1;
-        Position idealPosChange = new Position(rawXMov, rawYMov);
+        Main.LOGGER.info("rawXMov=" + String.valueOf(rawXMov));
+        Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
+        //Position idealPosChange = new Position(rawXMov, rawYMov);
         // Get Other 3 Players' Position
         Map<Integer, List<Integer>> infoSet = new HashMap<>();
         List<List<RangeClass>> rcList = new ArrayList<>();
@@ -69,67 +87,72 @@ public class KnightMoveState extends IMoveState{
             int eYdiff = ePos.getY() - cPos.getY();
             int eXdiff = ePos.getX() - cPos.getX();
             double eSlope = Math.abs(eYdiff / (double) (eXdiff));
-            int eRawYMov = Math.max(eYdiff, (int)Math.round(slope * Utils.GetSpeed(this, i)));
+            int eRawYMov = Math.max(eYdiff, (int)Math.round(eSlope * Utils.GetSpeed(this, i)));
             int eRawXMov = Math.max(eXdiff, Utils.GetSpeed(this, i) - eRawYMov);
             if (ePos.getY() > cPos.getY()) rawYMov *= -1;
             if (ePos.getX() > cPos.getX()) rawXMov *= -1;
-            Position predicted = new Position(ePos.getX() + rawXMov, ePos.getY() + rawYMov);
+            Position predicted = new Position(ePos.getX() + eRawXMov, ePos.getY() + eRawYMov);
             List<RangeClass> ep = Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
             rcList.add(ep);
         }
         List<RangeClass> rcfinal = Utils.GetEscapePath(this, rcList);
-        // Unstable Move: (Prob 0.3) Ignore the dangers
-        if (Math.random() * 10 <= 3) return new Position(cPos.getX() + idealPosChange.getX(), cPos.getY() + idealPosChange.getY());
+        // Unstable Move: (Prob 0.4) Ignore the dangers
+        if (Math.random() * 10 <= 6) {
+            //Main.LOGGER.info("idealPos : " + idealPosChange.toString());
+            Main.LOGGER.info("------");
+            return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        }
         // Stable Move: Follow the boarder first, then the target
-        Main.LOGGER.info("HERE STABLE MOVE");
+        //Main.LOGGER.info("HERE STABLE MOVE");
         String msg;
-        if (idealPosChange.getX() > 0) { // Compare b
-            msg = "Compare b: " + String.valueOf(idealPosChange.getX()) + " and ";
+        if (rawXMov > 0) { // Compare b
+            msg = "Compare b: " + String.valueOf(rawXMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(-rcfinal.get(3).dist);
-                idealPosChange.setX(Math.min(idealPosChange.getX(), -rcfinal.get(3).dist));
+                rawXMov = Math.min(rawXMov, -rcfinal.get(3).dist);
             }
             else {
                 msg += String.valueOf(rcfinal.get(1).dist);
-                idealPosChange.setX(Math.min(idealPosChange.getX(), rcfinal.get(1).dist));
+                rawXMov = Math.min(rawXMov, rcfinal.get(1).dist);
             }
         }
         else { // Compare d
-            msg = "Compare d: " + String.valueOf(idealPosChange.getX()) + " and ";
+            msg = "Compare d: " + String.valueOf(rawXMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(rcfinal.get(1).dist);
-                idealPosChange.setX(Math.max(idealPosChange.getX(), rcfinal.get(1).dist));
+                rawXMov = Math.max(rawXMov, rcfinal.get(1).dist);
             }
             else {
                 msg += String.valueOf(-rcfinal.get(3).dist);
-                idealPosChange.setX(Math.max(idealPosChange.getX(), -rcfinal.get(3).dist));
+                rawXMov = Math.max(rawXMov, -rcfinal.get(3).dist);
             }
         }
 
-        if (idealPosChange.getY() > 0) { // Compare c
-            msg += " ; Compare c: " + String.valueOf(idealPosChange.getY()) + " and ";
+        if (rawYMov > 0) { // Compare c
+            msg += " ; Compare c: " + String.valueOf(rawYMov) + " and ";
             if(rcfinal.get(0).dist + rcfinal.get(2).dist <= 0) {
                 msg += String.valueOf(-rcfinal.get(0).dist);
-                idealPosChange.setY(Math.min(idealPosChange.getY(), -rcfinal.get(0).dist));
+                rawYMov = Math.min(rawYMov, -rcfinal.get(0).dist);
             }
             else {
                 msg += String.valueOf(rcfinal.get(2).dist);
-                idealPosChange.setX(Math.min(idealPosChange.getX(), rcfinal.get(2).dist));
+                rawYMov = Math.min(rawYMov, rcfinal.get(2).dist);
             }
         }
         else { // Compare a
-            msg += " ; Compare a: " + String.valueOf(idealPosChange.getY()) + " and ";
+            msg += " ; Compare a: " + String.valueOf(rawYMov) + " and ";
             if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
                 msg += String.valueOf(rcfinal.get(2).dist);
-                idealPosChange.setX(Math.max(idealPosChange.getX(), rcfinal.get(2).dist));
+                rawYMov = Math.max(rawYMov, rcfinal.get(2).dist);
             }
             else {
                 msg += String.valueOf(-rcfinal.get(0).dist);
-                idealPosChange.setX(Math.max(idealPosChange.getX(), -rcfinal.get(0).dist));
+                rawYMov = Math.max(rawYMov, -rcfinal.get(0).dist);
             }
         }
-        Main.LOGGER.info(msg);
-        return new Position(cPos.getX() + idealPosChange.getX(), cPos.getY() + idealPosChange.getY());
+        Main.LOGGER.info("------");
+        //Main.LOGGER.info(msg);
+        return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
     }
 
     @Override

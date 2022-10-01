@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
+import starterpack.Main;
 import starterpack.AI.AIState;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
@@ -39,6 +40,8 @@ public abstract class IMoveState extends AIState{
                 return new Position(9,9);
             }
         }
+        Position res = Utils.GetPosition(this, this.getPlayerIndex());
+        if(res != null) Main.LOGGER.info("TELEPORT!");
         return Utils.GetPosition(this, this.getPlayerIndex());
     }
 }
