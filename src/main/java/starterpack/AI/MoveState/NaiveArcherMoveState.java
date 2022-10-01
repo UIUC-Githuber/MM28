@@ -21,8 +21,9 @@ public class NaiveArcherMoveState extends IMoveState {
 
     @Override
     public Position Update() {
+        Position tele = Teleport();
+        if (tele != null) return tele;
         return Move();
-
     }
 
     @Override

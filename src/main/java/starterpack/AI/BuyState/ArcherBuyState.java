@@ -19,7 +19,13 @@ public class ArcherBuyState extends IBuyState {
 
     @Override
     public Item Buy() {
-        return Item.NONE;
+        if(getPlayerState().getGold()>=8 && getPlayerState().getItem()==Item.NONE){
+            
+            return MoreDamage();
+        }
+        else{
+            return Item.NONE;
+        }
         /* 
          Choose a stretagy from MoreSpeed, MoreRange, MoreDamage
         if(getPlayerState().getGold()>=8){

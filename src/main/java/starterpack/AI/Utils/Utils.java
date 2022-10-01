@@ -309,21 +309,34 @@ public final class Utils {
             
         }
         */
-        //return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
-        Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
-        return GetNearestPosition(state, positionList);
+        Position resultPosition = GetPosition(state, state.getPlayerIndex()); //My Pos
+        resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+        switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
+            case ARCHER:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -3); 
+            case KNIGHT:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -1); 
+            break;
+            case WIZARD:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -2); 
+            break;
+        }
+        return resultPosition;
+        //this nearest position that can be reach by your character on once. 
+        //Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
+        //return GetNearestPosition(state, positionList);
         
     }
 
     
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
-    public static final Position GetPositionByLine(AIState state, Position targetPos){
+    public static final Position GetPositionByLine(AIState state, Position targetPos, int speedAdd){
         Position myPos = GetPosition(state, state.getPlayerIndex()); //My Postion
         int ydiff = Math.abs(targetPos.getY() - myPos.getY());
         int xdiff = Math.abs(targetPos.getX() - myPos.getX());
         double slope = Math.abs(ydiff / (double) xdiff);
-        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(state)));
-        int rawXMov = Math.min(xdiff, Utils.GetSpeed(state) - rawYMov);
+        int rawYMov = Math.min(ydiff, (int)Math.round(slope * (Utils.GetSpeed(state)+speedAdd)));
+        int rawXMov = Math.min(xdiff, (Utils.GetSpeed(state)+speedAdd) - rawYMov);
         if(myPos.getY() > targetPos.getY()) {rawYMov *= -1;}
         if(myPos.getX() > targetPos.getX()) {rawXMov *= -1;}
         return new Position(myPos.getX()+rawXMov, myPos.getY()+rawYMov);
@@ -733,4 +746,5 @@ public final class Utils {
             return minRange(otherplayers);
         }
     }
+    
 }
