@@ -835,5 +835,30 @@ public final class Utils {
             return minRange(otherplayers);
         }
     }
+
+    Position GetNearSpawnPosition(int playerindex){
+        Position nearSpawnPoint = new Position();
+        if(playerindex==0){
+            nearSpawnPoint.setX(2);
+            nearSpawnPoint.setY(2);
+        }
+        else if(playerindex==1){
+            nearSpawnPoint.setX(7);
+            nearSpawnPoint.setY(2);
+        }
+        else if(playerindex==2){
+            nearSpawnPoint.setX(7);
+            nearSpawnPoint.setY(7);
+        }
+        else{
+            nearSpawnPoint.setX(2);
+            nearSpawnPoint.setY(7);
+        }
+
+        return  nearSpawnPoint;
+
+    }
+
+
     
 }
