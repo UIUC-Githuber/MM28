@@ -5,11 +5,6 @@ import starterpack.AI.Utils.Utils;
 
 public class KnightAttackState extends IAttackState{
 
-    public KnightAttackState(GameState gameState, int playerIndex) {
-        super(gameState, playerIndex);
-        //TODO Auto-generated constructor stub
-        
-    }
 
     @Override
     public int Update() {
@@ -19,7 +14,7 @@ public class KnightAttackState extends IAttackState{
     }
 
     @Override
-    public int Attack() {
+
         // TODO Auto-generated method stub
         GameState gs = getGameState();
         if(Utils.DetectRange(this) != null) {

@@ -7,7 +7,7 @@ interface IAIState{
     public void ChangeState(AIState state);
     public void SetAttackTarget();
     public void SetMoveTarget();
-    public int Update();
+
 }
 public abstract class AIState implements IAIState{
     private GameState gameState;

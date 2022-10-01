@@ -10,7 +10,7 @@ public class ArcherAttackState extends IAttackState{
     }
 
     @Override
-    public void Update() {
+    public int Update() {
         // TODO Auto-generated method stub
         
     }
