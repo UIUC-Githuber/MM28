@@ -10,6 +10,7 @@ import starterpack.game.GameState;
 import starterpack.game.Item;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
+import starterpack.util.Utility;
 
 public abstract class IMoveState extends AIState{
     public IMoveState(GameState gameState, int playerIndex) {
@@ -21,7 +22,7 @@ public abstract class IMoveState extends AIState{
     public abstract void DetectTarget();
     public Position Teleport(){   
         if(getPlayerState().getItem()==Item.NONE||getPlayerState().getGold()>=30){
-            //if you don't have any item or you have too much
+            //if you don't have any item or you have too much, don't need to teleport
             return null;
         }
         else{
@@ -34,18 +35,9 @@ public abstract class IMoveState extends AIState{
             sum+=player.getStatSet().getDamage();
         }
         if(getPlayerState().getHealth()<=sum){
-            switch (getPlayerIndex()){
-                case 0:
-                return new Position(0,0);
-                case 1:
-                return new Position(9,0);
-                case 2:
-                return new Position(0,9);
-                case 3:
-                return new Position(9,9);
-            }
+            return Utility.spawnPoints.get(getPlayerIndex());
         }
-        return Utils.GetPosition(this, this.getPlayerIndex());
+        return null;
         }   
     }
 }
