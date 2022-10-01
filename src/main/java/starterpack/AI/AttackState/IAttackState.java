@@ -9,5 +9,5 @@ public abstract class IAttackState extends AIState{
         //TODO Auto-generated constructor stub
     }
 
-    public abstract void Attack();
+    public abstract int Attack();
 }

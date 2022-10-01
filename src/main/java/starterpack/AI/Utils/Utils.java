@@ -157,6 +157,13 @@ public final class Utils {
         return list;
 
     }
+    public static final int Getplayerindex (PlayerState player, GameState gs) {
+        int index =-1;
+        for (int i =0; i < 4; i++) {
+            if(player == (gs.getPlayerStateByIndex(i))) index = i;
+        }
+        return index;
+    }
 
     
 }
