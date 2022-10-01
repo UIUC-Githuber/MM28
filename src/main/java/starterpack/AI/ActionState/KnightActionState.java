@@ -8,5 +8,11 @@ public class KnightActionState extends IActionState{
     public void Attack(PlayerState target) {
         // TODO Auto-generated method stub
     }
+
+    @Override
+    public void Update() {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

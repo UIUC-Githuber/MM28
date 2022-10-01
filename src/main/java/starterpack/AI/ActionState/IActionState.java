@@ -5,5 +5,4 @@ import starterpack.game.PlayerState;
 
 public abstract class IActionState extends AIState{
     public abstract void Attack(PlayerState target);
-    public abstract void Update();
 }
