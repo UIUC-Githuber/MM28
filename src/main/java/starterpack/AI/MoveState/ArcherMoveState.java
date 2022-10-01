@@ -27,7 +27,10 @@ public class ArcherMoveState extends IMoveState{
     public Position Move() {
         PlayerState target;
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
-        Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList);
+        for(int i=0;i<playerStateList.size();i++){
+            Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList.get(i));
+        }
+        
         if(playerStateList == null||playerStateList.size()==0){
             target = Utils.GetNearestPlayerState(this);
         }
