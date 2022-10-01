@@ -18,9 +18,9 @@ public class WizardBuyState extends IBuyState{
 
     @Override
     public Item Buy() {
-        if(getPlayerState().getGold()>=8){
+        if(getPlayerState().getGold()>=8 && getPlayerState().getItem()==Item.NONE){
             
-            return MoreDamage();
+            return MoreRange();
         }
         return Item.NONE;
         /* 
@@ -44,6 +44,6 @@ public class WizardBuyState extends IBuyState{
         return Item.HUNTER_SCOPE;
     }
     private final Item MoreDamage(){
-        return Item.STRENGTH_POTION;
+        return Item.HUNTER_SCOPE;
     }
 }

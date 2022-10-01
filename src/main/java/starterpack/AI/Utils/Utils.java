@@ -271,7 +271,7 @@ public final class Utils {
     }
 
     //This Method may has problem
-    public static final Position GetAttackPositionInRange(AIState state, int playerindex){
+    public static final Position GetAttackPositionInRangeArcher(AIState state, int playerindex){
         Position b = GetPosition(state, playerindex); //Enemy Position
         int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
         int x = b.getX();
@@ -313,12 +313,12 @@ public final class Utils {
         resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
         switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
             case ARCHER:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -3); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             case KNIGHT:
                 resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -1); 
             break;
             case WIZARD:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -2); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             break;
         }
         return resultPosition;
@@ -328,6 +328,121 @@ public final class Utils {
         
     }
 
+      //This Method may has problem
+      public static final Position GetAttackPositionInRangeWizard(AIState state, int playerindex){
+        Position b = GetPosition(state, playerindex); //Enemy Position
+        int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
+        int x = b.getX();
+        int y = b.getY();
+
+        Position b_min = new Position(x-attackRange, y-attackRange);
+        Position b_max = new Position(x+attackRange,  y+attackRange);
+        Main.LOGGER.info("b_min: x = "+b_min.getX()+" y = "+b_min.getY());
+        Main.LOGGER.info("b_max: x = "+b_max.getX()+" y = "+b_max.getY());
+        List<Position> positionList = new ArrayList<Position>();
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
+            positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
+        }
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+            positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+        }
+        for(int i = 0;i<positionList.size();i++){
+            Main.LOGGER.info("pos:"+i+" x = "+positionList.get(i).getX()+" y = "+positionList.get(i).getY());
+        }
+        /* 
+        if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
+            //it implyes that My position is closer to the left-up corner of the enemy position, we use manhattanDistance here
+            for(int i=0;i<=attackRange;i++){
+                //we use <= because we should also include the right corner
+                positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+                positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+            }
+        }
+        else{
+            //it implyes that My position is closer to the right-down corner of the enemy position
+            
+        }
+        */
+        Position resultPosition = GetPosition(state, state.getPlayerIndex()); //My Pos
+        resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+        switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
+            case ARCHER:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+            case KNIGHT:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -1); 
+            break;
+            case WIZARD:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+            break;
+        }
+        return resultPosition;
+        //this nearest position that can be reach by your character on once. 
+        //Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
+        //return GetNearestPosition(state, positionList);
+        
+    }
+
+    public static final Position GetAttackPositionInRangeKnight(AIState state, int playerindex){
+        Position b = GetPosition(state, playerindex); //Enemy Position
+        int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
+        int x = b.getX();
+        int y = b.getY();
+
+        Position b_min = new Position(x-attackRange, y-attackRange);
+        Position b_max = new Position(x+attackRange,  y+attackRange);
+        Main.LOGGER.info("b_min: x = "+b_min.getX()+" y = "+b_min.getY());
+        Main.LOGGER.info("b_max: x = "+b_max.getX()+" y = "+b_max.getY());
+        List<Position> positionList = new ArrayList<Position>();
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
+            positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
+        }
+        for(int i=0;i<=2*attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+            positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+        }
+        for(int i = 0;i<positionList.size();i++){
+            Main.LOGGER.info("pos:"+i+" x = "+positionList.get(i).getX()+" y = "+positionList.get(i).getY());
+        }
+        /* 
+        if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
+            //it implyes that My position is closer to the left-up corner of the enemy position, we use manhattanDistance here
+            for(int i=0;i<=attackRange;i++){
+                //we use <= because we should also include the right corner
+                positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+                positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+            }
+        }
+        else{
+            //it implyes that My position is closer to the right-down corner of the enemy position
+            
+        }
+        */
+        Position resultPosition = GetPosition(state, state.getPlayerIndex()); //My Pos
+        resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+        switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
+            case ARCHER:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            case KNIGHT:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            break;
+            case WIZARD:
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
+            break;
+        }
+        return resultPosition;
+        //this nearest position that can be reach by your character on once. 
+        //Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
+        //return GetNearestPosition(state, positionList);
+        
+    }
+    
     
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
     public static final Position GetPositionByLine(AIState state, Position targetPos, int speedAdd){
@@ -722,6 +837,38 @@ public final class Utils {
         return resultPos;
     
     }
+    public static final boolean IfCenterInRange(AIState state) {
+        //get true position if player could potentially go out of range
+        int range = state.getPlayerState().getStatSet().getRange();
+        int x = state.getPlayerState().getPosition().getX();
+        int y = state.getPlayerState().getPosition().getY();
+        if ((x-range<=4 && x+range>=5) && (y-range<=4 && y+range>=5)  ) return true;
+        return false;
+    
+    }
+    public static final boolean IfEnemiesInCenter(AIState state) {
+        List<PlayerState> list_ = GetEnemies(state);
+        for(int i = 0 ; i < list_.size(); i++) {
+            int x = list_.get(i).getPosition().getX();
+            int y = list_.get(i).getPosition().getY();
+            if((x ==4 || x == 5) && (y==4 && y==5)) return true;
+        }
+        return false;
+
+    }
+    public static final List<PlayerState> IfEnemiesInCenterRetureList(AIState state) {
+        if(!IfEnemiesInCenter(state)) return null;
+        List<PlayerState> list_ = GetEnemies(state);
+        List<PlayerState> mylist_ = new ArrayList<PlayerState>();
+        for(int i = 0 ; i < list_.size(); i++) {
+            int x = list_.get(i).getPosition().getX();
+            int y = list_.get(i).getPosition().getY();
+            if((x ==4 || x == 5) && (y==4 && y==5)) mylist_.add(list_.get(i));
+        }
+        return mylist_;
+
+    }
+
     public static final PlayerState GetNearestPlayerState2(AIState state){
         List<PlayerState> otherplayers = GetEnemies(state);
         List<Integer> range = new ArrayList<Integer>();

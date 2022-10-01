@@ -27,7 +27,7 @@ public class StrategyConfig {
      }
 
      if(playerIndex == 3){
-        return new WizardStrategy();
+        return new KnightStrategy();
      }
      return null;
     }

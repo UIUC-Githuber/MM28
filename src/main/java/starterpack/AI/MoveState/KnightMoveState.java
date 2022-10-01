@@ -10,6 +10,8 @@ import starterpack.AI.Utils.Utils;
 import starterpack.AI.Utils.range.RangeClass;
 import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
+import starterpack.game.Item;
+import starterpack.game.PlayerState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
 
@@ -22,9 +24,18 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        //Position tele = Teleport();
-        //if (tele != null) return tele;
+        if(getPlayerState().getGold() >= 8 && getPlayerState().getItem() == Item.NONE && getPlayerState().getPosition().equals(Utility.spawnPoints.get(getPlayerIndex()))) {
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
         return Move();
+    }
+
+    @Override
+    public Position Teleport() {
+        if(getPlayerState().getItem()==Item.NONE && getPlayerState().getGold()>=8){
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
+        return super.Teleport();
     }
 
     @Override
@@ -75,12 +86,17 @@ public class KnightMoveState extends IMoveState{
         if(cPos.getX() > kbest.getX()) rawXMov = -1 * rawXMov;
         Main.LOGGER.info("rawXMov=" + String.valueOf(rawXMov));
         Main.LOGGER.info("rawYMov=" + String.valueOf(rawYMov));
+        PlayerState target = Utils.GetNearestPlayerState(this);
+        //Position resultPosition = Utils.GetAttackPositionInRangeKnight(this, Utils.Getplayerindex(target, getGameState()));
+        //return resultPosition;
+        return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        /*
         //Position idealPosChange = new Position(rawXMov, rawYMov);
         // Get Other 3 Players' Position
         Map<Integer, List<Integer>> infoSet = new HashMap<>();
         List<List<RangeClass>> rcList = new ArrayList<>();
         // Predict the next movement of other players and find the escape path
-        /*
+        
         for(int i : Utils.GetEnemiesIndex(this)) {
             Position ePos = Utils.GetPosition(this, i);
             List<Integer> info = Utils.GetEnemyInfo(i, this);
@@ -98,7 +114,7 @@ public class KnightMoveState extends IMoveState{
             Position predicted = new Position(ePos.getX() + eRawXMov, ePos.getY() + eRawYMov);
             List<RangeClass> ep = Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
             rcList.add(ep);
-        }*/
+        }
         List<RangeClass> rcfinal = Utils.GetEscapePath(this);
         //List<RangeClass> rcfinal = Utils.GetEscapePath(this, rcList);
         
@@ -172,6 +188,7 @@ public class KnightMoveState extends IMoveState{
         Main.LOGGER.info("x, y = " + String.valueOf(rawXMov) + " " + String.valueOf(rawYMov));
 
         return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
+        */
     }
 
     @Override
