@@ -73,7 +73,7 @@ public class KnightMoveState extends IMoveState{
             if (ePos.getY() > cPos.getY()) rawYMov *= -1;
             if (ePos.getX() > cPos.getX()) rawXMov *= -1;
             Position predicted = new Position(ePos.getX() + rawXMov, ePos.getY() + rawYMov);
-            
+            Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
         }
         if(!safePlayerSet.isEmpty()) {
 
