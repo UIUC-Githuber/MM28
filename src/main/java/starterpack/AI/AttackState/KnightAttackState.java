@@ -1,6 +1,7 @@
 package starterpack.AI.AttackState;
 
 import starterpack.game.GameState;
+import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 
 public class KnightAttackState extends IAttackState{
@@ -25,7 +26,7 @@ public class KnightAttackState extends IAttackState{
          if(Utils.DetectRange(this) != null) {
              return Utils.Getplayerindex (Utils.DetectRange(this), gs);
          }
-         return -1;
+         return getPlayerIndex();
          
     }
 }
