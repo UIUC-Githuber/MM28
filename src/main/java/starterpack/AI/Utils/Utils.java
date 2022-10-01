@@ -286,7 +286,7 @@ public final class Utils {
         return new Position(myPos.getX()+rawXMov, myPos.getY()+rawYMov);
     }
 
-    public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
+    public static final List<RangeClass> GetEscapePath (AIState state, Position cPos, Position ePos, int eIdx) {
         final RangeClass aa = new RangeClass(RangeFlag.WALL, state.getPlayerState(), GetPosition(state).getY(), Direction.UP);
         final RangeClass bb = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getX(), Direction.RIGHT);
         final RangeClass cc = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getY(), Direction.DOWN);
@@ -296,8 +296,8 @@ public final class Utils {
             a=aa;b=bb;c=cc;d=dd;
         }
         else {
-            Position cPos = GetPosition(state);
-            Position ePos = GetPosition(state, eIdx);
+            //Position cPos = GetPosition(state);
+            //Position ePos = GetPosition(state, eIdx);
             List<Integer> info = GetEnemyInfo(eIdx, state);
             int range = info.get(1);
             int minX = Math.max(0, ePos.getX()-range);
@@ -362,6 +362,10 @@ public final class Utils {
         List<RangeClass> paths = new ArrayList<>();
         paths.add(a);paths.add(b);paths.add(c);paths.add(d);
         return paths;
+    }
+
+    public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
+        return GetEscapePath(state, GetPosition(state), GetPosition(state, eIdx), eIdx);
     }
 
     public static final List<RangeClass> GetEscapePath(AIState state) {
