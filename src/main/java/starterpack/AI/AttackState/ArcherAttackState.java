@@ -32,13 +32,9 @@ public class ArcherAttackState extends IAttackState{
         List<PlayerState> killingbots = new ArrayList<PlayerState>();
 
         if(fatalbots == null) { // if none existFatal: attack greatest damage
-            List<PlayerState> otherplayers = new ArrayList<PlayerState>();
-            for (int i = 0; i < 4; i++) {
-                if(i != getPlayerIndex()) {
-                    otherplayers.add(getGameState().getPlayerStateByIndex(i));
-                }
-            }
-            return Utils.Getplayerindex(Utils.maxDamage(Utils.GetEnemies(this)), getGameState()); 
+            List<PlayerState> list = Utils.DetectRangeReturnList(this);
+            if(list.isEmpty()) return getPlayerIndex();
+            else return Utils.Getplayerindex(Utils.maxDamage(list), getGameState()); 
 
         }
 

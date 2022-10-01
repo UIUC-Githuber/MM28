@@ -174,6 +174,33 @@ public final class Utils {
         }
         return player;
     }
+    public static final List<PlayerState> DetectRangeReturnList(AIState state) {
+        //find the player within range
+        List<PlayerState> list_ = new ArrayList<PlayerState>();
+        int playerindex = state.getPlayerIndex();
+        GameState gs = state.getGameState();
+        int range = gs.getPlayerStateByIndex(playerindex).getStatSet().getRange();
+        int x= gs.getPlayerStateByIndex(playerindex).getPosition().getX();
+        int y = gs.getPlayerStateByIndex(playerindex).getPosition().getY();
+        PlayerState player = null;
+        for (int i =0; i < 4; i++) {
+            int otherx = gs.getPlayerStateByIndex(i).getPosition().getX();
+            int othery = gs.getPlayerStateByIndex(i).getPosition().getY();
+            if (i != playerindex && (otherx >= x-range && otherx <= x+ range && othery >= y-range && othery <= y + range)) {
+                if(player != null) {
+                    
+                    if(player.getStatSet().getDamage() < gs.getPlayerStateByIndex(i).getStatSet().getDamage()) {
+                        player= gs.getPlayerStateByIndex(i);
+                        list_.add(player);
+                    }
+                } else {
+                    player = gs.getPlayerStateByIndex(i);
+                    list_.add(player);
+                }
+            }
+        }
+        return list_;
+    }
 
     public static final List<Integer> GetEnemiesIndex (AIState state) {
         //Return the index list of people with index != our index
