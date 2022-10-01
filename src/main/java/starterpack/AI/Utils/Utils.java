@@ -1,5 +1,6 @@
 package starterpack.AI.Utils;
 
+import starterpack.AI.Utils.range.*;
 import starterpack.game.GameState;
 import starterpack.game.CharacterClass;
 import starterpack.game.Item;
@@ -238,6 +239,99 @@ public final class Utils {
         //get position of player[index]
         GameState gs = state.getGameState();
         return gs.getPlayerStateByIndex(index).getPosition();
+    }
+
+    public static final Position GetPosition(AIState state) {
+        return GetPosition(state, state.getPlayerIndex());
+    }
+
+    public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
+        final RangeClass aa = new RangeClass(RangeFlag.WALL, state.getPlayerState(), GetPosition(state).getY(), Direction.UP);
+        final RangeClass bb = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getX(), Direction.RIGHT);
+        final RangeClass cc = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getY(), Direction.DOWN);
+        final RangeClass dd = new RangeClass(RangeFlag.WALL, state.getPlayerState(), GetPosition(state).getX(), Direction.LEFT);
+        RangeClass a, b, c, d;
+        if (state.getPlayerIndex() == eIdx) {
+            a=aa;b=bb;c=cc;d=dd;
+        }
+        else {
+            Position cPos = GetPosition(state);
+            Position ePos = GetPosition(state, eIdx);
+            List<Integer> info = GetEnemyInfo(eIdx, state);
+            int range = info.get(1);
+            int minX = Math.max(0, ePos.getX()-range);
+            int maxX = Math.min(9, ePos.getX()+range);
+            int minY = Math.max(0, ePos.getY()-range);
+            int maxY = Math.min(9, ePos.getY()+range);
+            if(!(cPos.getX() <= maxX && cPos.getX() >= minX && cPos.getY() <= maxY && cPos.getY() >= minY)) { // not dangered
+                if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() < minY) {
+                    a = aa; b = bb; c = cc; d = dd;
+                }
+                else if(cPos.getX() >= minX && cPos.getX() <= maxX && cPos.getY() < minY) {
+                    a = aa; b = bb; d = dd;
+                    c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minY - cPos.getY(), Direction.DOWN);
+                }
+                else if(cPos.getX() < minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
+                    a = aa; c = cc; d = dd;
+                    b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minX - cPos.getX(), Direction.RIGHT);
+                }
+                else if(cPos.getX() == minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
+                    a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.UP);
+                    b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.RIGHT);
+                    c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.DOWN);
+                    d = dd;
+                }
+                else if(cPos.getX() > minX && cPos.getX() < maxX && cPos.getY() == minY) {
+                    a = aa;
+                    b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.RIGHT);
+                    c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.DOWN);
+                    d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.LEFT);
+                }
+                else if(cPos.getX() > minX && cPos.getX() < maxX && cPos.getY() == maxY) {
+                    a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.UP);
+                    b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.RIGHT);
+                    c = cc;
+                    d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.LEFT);
+                }
+                else if(cPos.getX() == maxX && cPos.getY() >= minY && cPos.getY() <= maxY) {
+                    a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.UP);
+                    b = bb;
+                    c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.DOWN);
+                    d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), 0, Direction.LEFT);
+                }
+                else if(cPos.getX() > maxX && cPos.getY() >= minY && cPos.getY() <= maxY) {
+                    a = aa; c = cc; b = bb;
+                    d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getX() - maxX, Direction.RIGHT);
+                }
+                else if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() > maxY) {
+                    a = aa; b = bb; c = cc; d = dd;
+                }
+                else {
+                    b = bb; c = cc; d = dd;
+                    a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getY() - maxY, Direction.UP);
+                }
+            }
+            else {
+                a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getY()-maxY, Direction.UP);
+                c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minY-cPos.getY(), Direction.DOWN);
+                b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minX-cPos.getX(), Direction.RIGHT);
+                d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getX()-maxX, Direction.LEFT);
+            }
+        }
+        List<RangeClass> paths = new ArrayList<>();
+        paths.add(a);paths.add(b);paths.add(c);paths.add(d);
+        return paths;
+    }
+
+    public static final List<RangeClass> GetEscapePath(AIState state) {
+        List<RangeClass> res = GetEscapePath(state, state.getPlayerIndex());
+        for(int i : GetEnemiesIndex(state)) {
+            List<RangeClass> lrc = GetEscapePath(state, i);
+            for(int j = 0; j < 4; ++j)
+                if(res.get(j).dist > lrc.get(j).dist)
+                    res.set(j, lrc.get(j));
+        }
+        return res;
     }
 
     public static final PlayerState maxScore(List<PlayerState> players) {
@@ -500,7 +594,5 @@ public final class Utils {
         return pos;
     }
 
-
-    
 }
 
