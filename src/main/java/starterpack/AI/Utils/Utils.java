@@ -5,6 +5,12 @@ import starterpack.game.CharacterClass;
 import starterpack.game.Item;
 import starterpack.game.Position;
 import starterpack.game.PlayerState;
+import starterpack.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import starterpack.AI.AIState;
 import starterpack.AI.CharacterAI;
 
 public final class Utils {
@@ -37,15 +43,48 @@ public final class Utils {
         
         return false;
     }
-    public static final PlayerState FindFatal(GameState gs, int playerindex) {
-        int damage = gs.getPlayerStateByIndex(playerindex).getStatSet().getDamage();
-        PlayerState player = gs.getPlayerStateByIndex(0);
+    public static final PlayerState FindFatal(AIState state) {
+        int damage = state.getGameState().getPlayerStateByIndex(state.getPlayerIndex()).getStatSet().getDamage();
+        PlayerState player = null;
         for (int i =0; i < 4; i++) {
-            if (i != playerindex && gs.getPlayerStateByIndex(i).getHealth() <= damage) {
-                player = gs.getPlayerStateByIndex(i);
+            if (i != state.getPlayerIndex() && state.getGameState().getPlayerStateByIndex(i).getHealth() <= damage) {
+                player = state.getGameState().getPlayerStateByIndex(i);
             }
         }
         return player;
+    }
+
+
+    public static final List<Integer> GetEnemyInfo(int i, AIState state){
+        List<Integer> EnemyInfo = new ArrayList<>();
+        int OurIndex = state.getPlayerIndex();       //find Our Player Index
+
+
+        //获取敌方的：与我方距离，攻击力，攻击距离，生命值，金币，分数。
+        int DistanceFromEnemy    = Utility.chebyshevDistance(
+                                   state.getGameState().getPlayerStateByIndex(i).getPosition(),
+                                   state.getGameState().getPlayerStateByIndex(OurIndex).getPosition()),
+            
+            EnemyAttackRange     = state.getGameState().getPlayerStateByIndex(i).getStatSet().getRange(), 
+            
+            Enemy_Damage         = state.getGameState().getPlayerStateByIndex(i).getStatSet().getDamage(), 
+
+            EnemyHP              = state.getGameState().getPlayerStateByIndex(i).getHealth(),
+            
+            EnemyGold            = state.getGameState().getPlayerStateByIndex(i).getGold(),
+            
+            EnemyScore           = state.getGameState().getPlayerStateByIndex(i).getScore();
+            
+        //将敌方的：与我方距离，攻击力，攻击距离，生命值，金币，分数。储存在List EnemyInfo里面。
+        EnemyInfo.add(DistanceFromEnemy);
+        EnemyInfo.add(Enemy_Damage);
+        EnemyInfo.add(EnemyAttackRange);
+        EnemyInfo.add(EnemyHP);
+        EnemyInfo.add(EnemyGold);
+        EnemyInfo.add(EnemyScore);
+
+        return  EnemyInfo;   //返还敌方数据。
+
     }
     
 }
