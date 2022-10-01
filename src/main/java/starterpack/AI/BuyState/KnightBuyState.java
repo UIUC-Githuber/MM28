@@ -1,6 +1,7 @@
 package starterpack.AI.BuyState;
 
 import starterpack.game.GameState;
+import starterpack.game.Item;
 
 public class KnightBuyState extends IBuyState{
 
@@ -10,14 +11,19 @@ public class KnightBuyState extends IBuyState{
     }
 
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
+    public Item Update() {
+        return Buy();
         
     }
 
     @Override
-    public void Buy() {
-        // TODO Auto-generated method stub
+    public Item Buy() {
+        if(getPlayerState().getGold()>=Item.SHIELD.getCost()){
+            return Item.SHIELD;
+        }
+        else{
+            return Item.NONE;
+        }
         
     }
 }
