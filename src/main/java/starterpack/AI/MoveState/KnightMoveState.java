@@ -5,10 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.chainsaw.Main;
+
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 public class KnightMoveState extends IMoveState{
 
@@ -25,6 +31,7 @@ public class KnightMoveState extends IMoveState{
 
     @Override
     public Position Move() {
+        //LogManager.getLogger(Main.class.getName()).info("move");
         // TODO Auto-generated method stub
         Position cPos = Utils.GetPosition(this, getPlayerIndex());
         int ydiff = 4 - cPos.getY();

@@ -20,7 +20,7 @@ import starterpack.strategy.StrategyConfig;
 public class Main {
     enum Phase { USE, MOVE, ATTACK, BUY }
 
-    private static final Logger LOGGER = LogManager.getLogger(Main.class.getName());
+    public static final Logger LOGGER = LogManager.getLogger(Main.class.getName()); //private -> public, remember to turn back.
 
     private static final int RETRY_MILIS = 1000;
 
