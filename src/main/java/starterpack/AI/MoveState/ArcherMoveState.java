@@ -9,6 +9,7 @@ import starterpack.AI.Utils.range.Direction;
 import starterpack.AI.Utils.range.RangeClass;
 import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
+import starterpack.game.Item;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
@@ -30,11 +31,10 @@ public class ArcherMoveState extends IMoveState {
 
     @Override
     public Position Teleport(){
-        if(getPlayerState().getGold()>=8){
+        if(getPlayerState().getItem()==Item.NONE && getPlayerState().getGold()>=8){
             return Utility.spawnPoints.get(getPlayerIndex());
         }
         return super.Teleport();
-
     }
 
     @Override
