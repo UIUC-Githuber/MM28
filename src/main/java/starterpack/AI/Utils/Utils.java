@@ -70,6 +70,21 @@ public final class Utils {
         return player;
 
     }
+    public static final List<PlayerState> ListFindFatal(AIState state) {
+        //Find the enemies that we can K.O. in the range of attack. return a list of them
+        int playerindex = state.getPlayerIndex();
+        GameState gs = state.getGameState();
+        int damage = gs.getPlayerStateByIndex(playerindex).getStatSet().getDamage();
+        List<PlayerState> player = new ArrayList<PlayerState>();
+        for (int i =0; i < 4; i++) {
+            if (i != playerindex && DetectRange(state, i) && gs.getPlayerStateByIndex(i).getHealth() <= damage) {
+                player.add( gs.getPlayerStateByIndex(i));
+                
+            }
+        }
+        if(player.isEmpty()) return null;
+        return player;
+    }
 
 
     public static final List<Integer> GetEnemyInfo(int i, AIState state){
@@ -116,6 +131,23 @@ public final class Utils {
         
         return false;
     }
+    public static final Boolean DetectRangeGameState(GameState gs, int playerindex, int otherplayerindex) {
+        //check whether otherplayer is within the range
+        // int playerindex = getPlayerIndex();
+        // GameState gs = state.getGameState();
+        int range = gs.getPlayerStateByIndex(playerindex).getStatSet().getRange();
+        int x= gs.getPlayerStateByIndex(playerindex).getPosition().getX();
+        int y = gs.getPlayerStateByIndex(playerindex).getPosition().getY();
+
+        int otherx= gs.getPlayerStateByIndex(otherplayerindex).getPosition().getX();
+        int othery = gs.getPlayerStateByIndex(otherplayerindex).getPosition().getY();
+        
+        if (otherx >= x-range && otherx <= x+ range && othery >= y-range && othery <= y + range) {
+            return true;
+        }
+        
+        return false;
+    }
     public static final PlayerState DetectRange(AIState state) {
         //find the player within range
         int playerindex = state.getPlayerIndex();
@@ -129,6 +161,7 @@ public final class Utils {
             int othery = gs.getPlayerStateByIndex(i).getPosition().getY();
             if (i != playerindex && (otherx >= x-range && otherx <= x+ range && othery >= y-range && othery <= y + range)) {
                 if(player != null) {
+                    
                     if(player.getStatSet().getDamage() < gs.getPlayerStateByIndex(i).getStatSet().getDamage()) {
                         player= gs.getPlayerStateByIndex(i);
                     }
@@ -195,10 +228,39 @@ public final class Utils {
         return SpeedOfPlayer;
     }
 
+    public static final Position GetPosition(AIState state) {
+        //get position of player[index]
+        GameState gs = state.getGameState();
+        return gs.getPlayerStateByIndex(state.getPlayerIndex()).getPosition();
+    }
     public static final Position GetPosition(AIState state, int index) {
         //get position of player[index]
         GameState gs = state.getGameState();
         return gs.getPlayerStateByIndex(index).getPosition();
+    }
+
+    public static final PlayerState maxScore(List<PlayerState> players) {
+        int max_ = players.get(0).getScore();
+        PlayerState maxplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getScore() > max_) {
+                max_ = players.get(i).getScore();
+                maxplayer = players.get(i);
+            }
+        }
+        return maxplayer;
+    }
+
+    public static final PlayerState maxDamage(List<PlayerState> players) {
+        int max_ = players.get(0).getStatSet().getDamage();
+        PlayerState maxplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getStatSet().getDamage() > max_) {
+                max_ = players.get(i).getStatSet().getDamage();
+                maxplayer = players.get(i);
+            }
+        }
+        return maxplayer;
     }
 
     
