@@ -1,7 +1,11 @@
 package starterpack.AI.MoveState;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import starterpack.AI.AIState;
 import starterpack.game.GameState;
+import starterpack.game.PlayerState;
+import starterpack.game.Position;
 
 public abstract class IMoveState extends AIState{
     public IMoveState(GameState gameState, int playerIndex) {
@@ -10,5 +14,23 @@ public abstract class IMoveState extends AIState{
     }
     public abstract void Move();
     public abstract void DetectTarget();
-    public abstract void Teleport();
+    public Position Teleport(){   
+        int sum = 0;
+        for(PlayerState player:GetDangerousPlayerState(this)){
+            sum+=player.getStatSet().getDamage();
+        }
+        if(getPlayerState().getHealth()<=sum){
+            switch (getPlayerIndex()){
+                case 0:
+                return new Position(0,0);
+                case 1:
+                return new Position(9,0);
+                case 2:
+                return new Position(0,9);
+                case 3:
+                return new Position(9,9);
+            }
+        }
+        
+    }
 }
