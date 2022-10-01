@@ -3,6 +3,7 @@ package starterpack.AI.BuyState;
 import starterpack.AI.AIState;
 import starterpack.game.GameState;
 import starterpack.game.Item;
+import starterpack.Main;
 
 public class ArcherBuyState extends IBuyState {
 
@@ -18,13 +19,19 @@ public class ArcherBuyState extends IBuyState {
 
     @Override
     public Item Buy() {
-        // Choose a stretagy from MoreSpeed, MoreRange, MoreDamage
+        return Item.NONE;
+        /* 
+         Choose a stretagy from MoreSpeed, MoreRange, MoreDamage
         if(getPlayerState().getGold()>=8){
+            Main.LOGGER.info("RALLY_BANNER = " + MoreDamage().getStatSet().getDamage());
+            getPlayerState().setGold(getPlayerState().getGold()-8);
             return MoreDamage();
         }
         else{
+            Main.LOGGER.info("NonE item");
             return Item.NONE;
         }        
+        */
     }
 
     private final Item MoreSpeed(){

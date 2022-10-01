@@ -5,74 +5,78 @@ import java.util.List;
 
 import starterpack.Main;
 import starterpack.AI.Utils.Utils;
+import starterpack.AI.Utils.range.Direction;
+import starterpack.AI.Utils.range.RangeClass;
 import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
 
-public class ArcherMoveState extends IMoveState{
+public class ArcherMoveState extends IMoveState {
 
     public ArcherMoveState(GameState gameState, int playerIndex) {
         super(gameState, playerIndex);
-        //TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
 
     @Override
     public Position Update() {
-        return NaiveMove();
-        
+        return Move();
+
     }
-    public Position NaiveMove(){
-        PlayerState target = Utils.GetNearestPlayerState(this);
-        Main.LOGGER.info("playerid = "+ Utils.Getplayerindex(target, getGameState()));
-        Position targePosition = Utils.GetPosition(this, Utils.Getplayerindex(target, getGameState()));
-        Main.LOGGER.info("moveTo: x = "+targePosition.getX()+" y = "+targePosition.getY());
-        Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
-        return result;
-    }
+
     @Override
     public Position Move() {
-        PlayerState target;
-        List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
-        if(playerStateList == null||playerStateList.size()==0){
-            //if you are safe now, search for a hunter target
-            target = Utils.GetNearestPlayerState(this);
-            Main.LOGGER.info("Utils.GetDangerousPlayerState: "+target);
-        }
-        else{
-            for(int i=0;i<playerStateList.size();i++){
-                Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList.get(i));
+        Position myPosition = Utils.GetPosition(this);
+        Position resultPosition = myPosition;
+        List<PlayerState> dangerousPlayerStateList = Utils.GetDangerousPlayerState(this);
+        if (dangerousPlayerStateList == null || dangerousPlayerStateList.size() == 0) {
+            //it shows that Archer is safe now and can actively find target to kill
+            PlayerState target = Utils.GetNearestPlayerState(this);
+            resultPosition = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
+        } else {
+            //it shows that Archer is in danger now and need to be away from the enemies
+            List<RangeClass> rangeClassList = Utils.GetEscapePath(this);
+            int max = Integer.MIN_VALUE;
+            RangeClass resultRangeClass = rangeClassList.get(0);
+            for (RangeClass rangeClass : rangeClassList) {
+                if (rangeClass.dist > max) {
+                    max = rangeClass.dist;
+                    resultRangeClass = rangeClass;
+                }
             }
-            target = Utils.GetMostDangerousEnemy(playerStateList);
-            Main.LOGGER.info("Utils.GetMostDangerousEnemy: "+target);
-                //int rangeArray[] = new int[4];
-                //rangeArray = Util.GetRangeBox();
-                
-            switch(target.getCharacterClass()){
-                    //if Archer, then move to the places where
-                    case ARCHER:
-                        break;
-                    case KNIGHT:
-                        
-                        break;
-                    case WIZARD:
-                        break;
-                    default:
-                        break;
+            int speed = getPlayerState().getStatSet().getSpeed();
+            int distance = resultRangeClass.dist >= 0 ? resultRangeClass.dist + 1 : resultRangeClass.dist - 1;
+            // IF It's postive, add 1, if it's negative minus one. So its abs value must
+            // increase 1.
+            switch (resultRangeClass.dir) {
+                case UP:
+                    resultPosition = new Position(myPosition.getX(),
+                            Math.min(myPosition.getY() - speed, myPosition.getY() - distance));
+                    break;
+                case RIGHT:
+                    resultPosition = new Position(Math.min(myPosition.getX() + speed, myPosition.getX() + distance),
+                            myPosition.getX());
+                    break;
+                case DOWN:
+                    resultPosition = new Position(myPosition.getX(),
+                            Math.min(myPosition.getY() + speed, myPosition.getY() + distance));
+                    break;
+                case LEFT:
+                    resultPosition = new Position(Math.min(myPosition.getX() - speed, myPosition.getX() - distance),
+                            myPosition.getX());
+                    break;
             }
-            
+            // List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
         }
-        //Position result = Utils.Getplayerindex(target, getGameState());
-        Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
-        Main.LOGGER.info("moveTo: x = "+result.getX()+" y = "+result.getY());
-        return result;
+
+        return resultPosition;
     }
 
     @Override
     public void DetectTarget() {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
 }
