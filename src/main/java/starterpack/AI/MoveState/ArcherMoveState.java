@@ -28,7 +28,6 @@ public class ArcherMoveState extends IMoveState{
         Position targePosition = Utils.GetPosition(this, Utils.Getplayerindex(target, getGameState()));
         Main.LOGGER.info("moveTo: x = "+targePosition.getX()+" y = "+targePosition.getY());
         Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
-        Main.LOGGER.info("moveTo: x = "+result.getX()+" y = "+result.getY());
         return result;
     }
     @Override

@@ -271,26 +271,29 @@ public final class Utils {
     }
 
     //This Method may has problem
-    public static final Position GetAttackPositionInRange(AIState state, int playerindex){;
-        Position a = GetPosition(state, state.getPlayerIndex()); //My Postion
+    public static final Position GetAttackPositionInRange(AIState state, int playerindex){
         Position b = GetPosition(state, playerindex); //Enemy Position
         int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
         int x = b.getX();
         int y = b.getY();
+
         Position b_min = new Position(x-attackRange, y-attackRange);
-        Position b_max = new Position(x+attackRange, y+attackRange);
+        Position b_max = new Position(x+attackRange,  y+attackRange);
         Main.LOGGER.info("b_min: x = "+b_min.getX()+" y = "+b_min.getY());
         Main.LOGGER.info("b_max: x = "+b_max.getX()+" y = "+b_max.getY());
         List<Position> positionList = new ArrayList<Position>();
-        for(int i=0;i<=attackRange;i++){
+        for(int i=0;i<=2*attackRange;i++){
             //we use <= because we should also include the right corner
             positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
             positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
         }
-        for(int i=0;i<=attackRange;i++){
+        for(int i=0;i<=2*attackRange;i++){
             //we use <= because we should also include the right corner
             positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
             positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+        }
+        for(int i = 0;i<positionList.size();i++){
+            Main.LOGGER.info("pos:"+i+" x = "+positionList.get(i).getX()+" y = "+positionList.get(i).getY());
         }
         /* 
         if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
@@ -306,10 +309,13 @@ public final class Utils {
             
         }
         */
-        return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
-        //return GetNearestPosition(state, positionList);
+        //return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
+        Main.LOGGER.info("resultPos: x = "+GetNearestPosition(state, positionList).getX()+" y = "+GetNearestPosition(state, positionList).getY());
+        return GetNearestPosition(state, positionList);
+        
     }
 
+    
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
     public static final Position GetPositionByLine(AIState state, Position targetPos){
         Position myPos = GetPosition(state, state.getPlayerIndex()); //My Postion
@@ -657,23 +663,13 @@ public final class Utils {
 
     }
 
-    public static final int ManhattanDistance(Position a, Position b) {
-        //return manhattandistance between two positions
-        int x1 =a.getX();
-        int y1 = a.getY();
-        int x2 = b.getX();
-        int y2 = b.getY();
-        return Math.abs(x1-x2) + Math.abs(y1-y2);
-
-        
-    }
     public static final Position GetNearestPosition (AIState state, List<Position> otherpositions) {
         //get nearest position out of a list of positions
-        int min_ = ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(0));
+        int min_ = Utility.manhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(0));
         Position p  = otherpositions.get(0);
         for (int i = 1; i < otherpositions.size(); i++) {
-            if (ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i)) < min_) {
-                min_ = ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i));
+            if (Utility.manhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i)) < min_) {
+                min_ = Utility.manhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i));
                 p = otherpositions.get(i);
             }
         }
@@ -684,11 +680,12 @@ public final class Utils {
         //get true position if player could potentially go out of range
         int x= pos.getX();
         int y = pos.getY();
-        if(x<0) return new Position(0, y);
-        if(x>9) return new Position(9, y);
-        if(y<0) return new Position(x, 0);
-        if(y>9) return new Position(x, 9);
-        return pos;
+        Position resultPos = new Position(x,y);
+        if(x<0) resultPos.setX(0);
+        if(x>9) resultPos.setX(9);
+        if(y<0) resultPos.setY(0);
+        if(y>9) resultPos.setY(9);
+        return resultPos;
     
     }
     public static final PlayerState GetNearestPlayerState2(AIState state){
