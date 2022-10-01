@@ -263,6 +263,71 @@ public final class Utils {
         return maxplayer;
     }
 
+    // This method may have issue
+    public static final PlayerState GetNeareastPlayerState(AIState state){
+        PlayerState nearestChoice;  
+        //Following are used to record the information of current-NearestPlayer
+        List<Integer> EnemyIndex = GetEnemiesIndex(state);
+        int MinDistance = 100;
+        int IndexOfNearestPlayer;
+        int HPofNearestPlayer = 100;
+        //Initializing IndexOfNearestPlayer to something other than our own index.
+        //Initialization is used here to prevent no-initialization in future.
+        if(state.getPlayerIndex()!=0){
+            IndexOfNearestPlayer = 0;
+        }
+        else{
+            IndexOfNearestPlayer = 1;
+        }
+        
+        //If there are multiple players having same Dist, HP, they will be added to this list.
+        //The list is used to pass to the GetLeastDangerousEnemy() Method 
+        //to find the least dangerous enemy.
+        List<PlayerState> CandidatesOfLeastDangerousPlayer = new ArrayList<>();
+        //If something is added to the list, we NeedToFindLeastDangerous Enemy.
+        boolean NeedToFindLeastDangerous = false;
+
+        //Go through every enemy, get their info, and compare.
+        for(int i=0; i<3; i++){
+            List<Integer> Info = GetEnemyInfo(EnemyIndex.get(i), state); //Current Enemy's info is stored in this list
+            int CurrentDistance  = Info.get(0); //current enemy's distance
+            int CurrentHP = Info.get(3);
+
+
+            if(CurrentDistance<MinDistance){ //if current distance is smaller than the smallest distance,
+                MinDistance = CurrentDistance; //set the smallest distance to current value
+                IndexOfNearestPlayer = EnemyIndex.get(i); //store the index of current enemy.
+                HPofNearestPlayer = CurrentHP;          // also store the HP
+            }
+            else if(CurrentDistance == MinDistance){ //if distance are the same, compare HP
+                //HaveEqualDistance = true;
+                if(CurrentHP<HPofNearestPlayer){
+                    IndexOfNearestPlayer = EnemyIndex.get(i);
+                    HPofNearestPlayer = CurrentHP;
+                }
+                else if(CurrentHP == HPofNearestPlayer){ //If HP are the same, find the least dangerous one by first
+                    //adding them to candidate
+                    CandidatesOfLeastDangerousPlayer.add(
+                    state.getGameState().getPlayerStateByIndex(IndexOfNearestPlayer));
+                    
+                    CandidatesOfLeastDangerousPlayer.add(
+                    state.getGameState().getPlayerStateByIndex(EnemyIndex.get(i)));
+
+                    NeedToFindLeastDangerous = true;
+                }
+
+            }
+        }
+
+        if(NeedToFindLeastDangerous){ //find the least dangerous one if needed.
+            return GetLeastDangerousEnemy(CandidatesOfLeastDangerousPlayer);
+        }
+
+        nearestChoice = state.getGameState().
+        getPlayerStateByIndex(EnemyIndex.get(IndexOfNearestPlayer));
+
+        return nearestChoice;
+    }
     
 }
 
