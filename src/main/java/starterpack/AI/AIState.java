@@ -8,7 +8,6 @@ interface IAIState{
     public void SetAttackTarget();
     public void SetMoveTarget();
 
-    
 }
 public abstract class AIState implements IAIState{
     private GameState gameState;

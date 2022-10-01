@@ -8,6 +8,5 @@ public abstract class IAttackState extends AIState{
         super(gameState, playerIndex);
         //TODO Auto-generated constructor stub
     }
-    public abstract int Update();
-    public abstract void Attack();
+
 }
