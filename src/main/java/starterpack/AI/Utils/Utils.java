@@ -8,7 +8,7 @@ import starterpack.game.PlayerState;
 import starterpack.AI.CharacterAI;
 
 public final class Utils {
-    // TODO
+    // 
     public static final PlayerState MinHealthPlayer(GameState gs, int playerindex) {
         int minPH;
         int index;
