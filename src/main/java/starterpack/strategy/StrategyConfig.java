@@ -23,11 +23,11 @@ public class StrategyConfig {
      }
 
      if(playerIndex == 2){
-        return new ArcherStrategy();
+        return new WizardStrategy();
      }
 
      if(playerIndex == 3){
-        return new KnightStrategy();
+        return new WizardStrategy();
      }
      return null;
     }
