@@ -19,7 +19,7 @@ public class ArcherMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        return new Position(0,0);
+        return Move();
         
     }
 

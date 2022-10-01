@@ -530,15 +530,15 @@ public final class Utils {
         List<Integer> range = new ArrayList<Integer>();
         List<Integer> damage_ = new ArrayList<Integer>();
         List<PlayerState> damagePlayers = new ArrayList<PlayerState>();
-        for (int i = 0; i< 3; i++) {
-            range.set(i, otherplayers.get(i).getStatSet().getRange());
+        for (int i = 0; i< otherplayers.size(); i++) {
+            range.add(otherplayers.get(i).getStatSet().getRange());
         }
         int min_ = Collections.min(range);
         int count = 0;
-        for(int i = 0; i< 3; i++) {
+        for(int i = 0; i< otherplayers.size() ; i++) {
             if(range.get(i) == min_)  {
                 count++;
-                damage_.set(i,otherplayers.get(i). getStatSet().getDamage());
+                damage_.add(otherplayers.get(i). getStatSet().getDamage());
                 damagePlayers.add(otherplayers.get(i));
             }
         }
@@ -568,15 +568,15 @@ public final class Utils {
         List<Integer> range = new ArrayList<Integer>();
         List<Integer> damage_ = new ArrayList<Integer>();
         List<PlayerState> damagePlayers = new ArrayList<PlayerState>();
-        for (int i = 0; i< 3; i++) {
-            range.set(i, otherplayers.get(i).getStatSet().getRange());
+        for (int i = 0; i<  otherplayers.size(); i++) {
+            range.add(otherplayers.get(i).getStatSet().getRange());
         }
         int max_ = Collections.max(range);
         int count = 0;
-        for(int i = 0; i< 3; i++) {
+        for(int i = 0; i<  otherplayers.size(); i++) {
             if(range.get(i) == max_)  {
                 count++;
-                damage_.set(i,otherplayers.get(i). getStatSet().getDamage());
+                damage_.add(otherplayers.get(i). getStatSet().getDamage());
                 damagePlayers.add(otherplayers.get(i));
             }
         }
