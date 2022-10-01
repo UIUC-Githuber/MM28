@@ -4,5 +4,9 @@ import starterpack.AI.AIState;
 import starterpack.game.GameState;
 
 public abstract class IUseState extends AIState{
-    public abstract void Use(GameState gameState); // Note: Should Check whether item is useable.
+    public IUseState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+    }
+
+    public abstract void Use(); // Note: Should Check whether item is useable.
 }

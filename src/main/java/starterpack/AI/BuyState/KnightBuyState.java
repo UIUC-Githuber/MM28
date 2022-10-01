@@ -4,6 +4,11 @@ import starterpack.game.GameState;
 
 public class KnightBuyState extends IBuyState{
 
+    public KnightBuyState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public void Update() {
         // TODO Auto-generated method stub
@@ -11,7 +16,7 @@ public class KnightBuyState extends IBuyState{
     }
 
     @Override
-    public void Buy(GameState gameState) {
+    public void Buy() {
         // TODO Auto-generated method stub
         
     }
