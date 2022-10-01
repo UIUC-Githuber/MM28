@@ -15,7 +15,7 @@ public class StrategyConfig {
     //else 
 
     if(playerIndex == 0){
-        return new KnightStrategy();
+        return new ArcherStrategy();
      }
      if(playerIndex == 1){
         return new KnightStrategy();
@@ -26,9 +26,9 @@ public class StrategyConfig {
      }
 
      if(playerIndex == 3){
-        return  new KnightStrategy();
+        return new NaiveArcherStrategy();
      }
-     return  null;
+     return null;
     }
 
 }
