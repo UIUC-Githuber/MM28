@@ -8,6 +8,8 @@ public class StrategyConfig {
      * @return A Strategy object.
      */
     public static Strategy getStrategy(int playerIndex) {
+    //if (playerIndex == 0 ||playerIndex == 1) return new KnightStrategy();
+    //else 
     return new ArcherStrategy();
     }
 }

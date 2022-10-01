@@ -244,17 +244,28 @@ public final class Utils {
     }
 
     //This Method may has problem
-    public static final Position GetAttackPositionInRange(AIState state, int playerindex){
-        GameState gs = state.getGameState();
+    public static final Position GetAttackPositionInRange(AIState state, int playerindex){;
         Position a = GetPosition(state, state.getPlayerIndex()); //My Postion
         Position b = GetPosition(state, playerindex); //Enemy Position
         int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
         int x = b.getX();
         int y = b.getY();
-        int index = 0;
         Position b_min = new Position(x-attackRange, y-attackRange);
         Position b_max = new Position(x+attackRange, y+attackRange);
+        Main.LOGGER.info("b_min: x = "+b_min.getX()+" y = "+b_min.getY());
+        Main.LOGGER.info("b_max: x = "+b_max.getX()+" y = "+b_max.getY());
         List<Position> positionList = new ArrayList<Position>();
+        for(int i=0;i<=attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
+            positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
+        }
+        for(int i=0;i<=attackRange;i++){
+            //we use <= because we should also include the right corner
+            positionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+            positionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+        }
+        /* 
         if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
             //it implyes that My position is closer to the left-up corner of the enemy position, we use manhattanDistance here
             for(int i=0;i<=attackRange;i++){
@@ -265,14 +276,11 @@ public final class Utils {
         }
         else{
             //it implyes that My position is closer to the right-down corner of the enemy position
-            for(int i=0;i<=attackRange;i++){
-                //we use <= because we should also include the right corner
-                positionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
-                positionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
-            }
+            
         }
-        //return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
-        return GetNearestPosition(state, positionList);
+        */
+        return GetPositionByLine(state, GetNearestPosition(state, positionList)); //this nearest position that can be reach by your character on once. 
+        //return GetNearestPosition(state, positionList);
     }
 
     //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
@@ -629,12 +637,11 @@ public final class Utils {
         //get true position if player could potentially go out of range
         int x= pos.getX();
         int y = pos.getY();
-        Position p = new Position();
-        if(x<0) p.setX(0);
-        if(x>9) p.setX(9);
-        if(y<0) p.setY(0);
-        if(y>9) p.setY(9);
-        return p;
+        if(x<0) return new Position(0, y);
+        if(x>9) return new Position(9, y);
+        if(y<0) return new Position(x, 0);
+        if(y>9) return new Position(x, 9);
+        return pos;
     
     }
 
