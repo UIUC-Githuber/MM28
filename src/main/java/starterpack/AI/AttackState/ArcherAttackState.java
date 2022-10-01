@@ -1,8 +1,8 @@
-package starterpack.AI.UseState;
+package starterpack.AI.AttackState;
 
 import starterpack.game.GameState;
 
-public class WizardUseState extends IUseState{
+public class ArcherAttackState extends IAttackState{
 
     @Override
     public void Update() {
@@ -11,7 +11,7 @@ public class WizardUseState extends IUseState{
     }
 
     @Override
-    public void Use(GameState gameState) {
+    public void Attack(GameState gameState) {
         // TODO Auto-generated method stub
         
     }

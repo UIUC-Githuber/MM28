@@ -1,6 +1,6 @@
 package starterpack.AI.UseState;
 
-import starterpack.game.Item;
+import starterpack.game.GameState;
 
 public class ArcherUseState extends IUseState{
 
@@ -11,9 +11,8 @@ public class ArcherUseState extends IUseState{
     }
 
     @Override
-    public void Use(Item item) {
+    public void Use(GameState gameState) {
         // TODO Auto-generated method stub
         
     }
-    
 }

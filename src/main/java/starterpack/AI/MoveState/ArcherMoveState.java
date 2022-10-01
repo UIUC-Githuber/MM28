@@ -1,26 +1,30 @@
 package starterpack.AI.MoveState;
 
-import starterpack.game.PlayerState;
-import starterpack.game.Position;
+import starterpack.game.GameState;
 
 public class ArcherMoveState extends IMoveState{
-
-    @Override
-    public void Move(Position pos) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void DetectTarget(PlayerState Target) {
-        // TODO Auto-generated method stub
-        
-    }
 
     @Override
     public void Update() {
         // TODO Auto-generated method stub
         
     }
-    
+
+    @Override
+    public void Move(GameState gameState) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void DetectTarget(GameState gameState) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void Teleport(GameState gameState) {
+        // TODO Auto-generated method stub
+        
+    }
 }
