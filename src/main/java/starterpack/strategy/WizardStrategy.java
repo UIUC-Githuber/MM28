@@ -4,18 +4,9 @@ import starterpack.game.GameState;
 import starterpack.game.CharacterClass;
 import starterpack.game.Item;
 import starterpack.game.Position;
-import starterpack.Main;
-import starterpack.AI.*;
-import starterpack.AI.AttackState.KnightAttackState;
 import starterpack.AI.AttackState.WizardAttackState;
-import starterpack.AI.BuyState.KnightBuyState;
 import starterpack.AI.BuyState.WizardBuyState;
-import starterpack.AI.MoveState.IMoveState;
-import starterpack.AI.MoveState.Naive2KnightMoveState;
-import starterpack.AI.MoveState.KnightMoveState;
-import starterpack.AI.MoveState.NaiveKnightMoveState;
 import starterpack.AI.MoveState.WizardMoveState;
-import starterpack.AI.UseState.KnightUseState;
 import starterpack.AI.UseState.WizardUseState;;
 
 public class WizardStrategy implements Strategy {
