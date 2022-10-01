@@ -96,7 +96,7 @@ public final class Utils {
         EnemyInfo.add(EnemyGold);
         EnemyInfo.add(EnemyScore);
 
-        return  EnemyInfo;   //返还敌方数据。
+        return  EnemyInfo;
 
     }
     public static final Boolean DetectRange(AIState state, int otherplayerindex) {
