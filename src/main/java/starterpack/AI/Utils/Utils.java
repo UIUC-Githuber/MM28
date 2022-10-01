@@ -329,7 +329,7 @@ public final class Utils {
         return new Position(myPos.getX()+rawXMov, myPos.getY()+rawYMov);
     }
 
-    public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
+    public static final List<RangeClass> GetEscapePath (AIState state, Position cPos, Position ePos, int eIdx) {
         final RangeClass aa = new RangeClass(RangeFlag.WALL, state.getPlayerState(), GetPosition(state).getY(), Direction.UP);
         final RangeClass bb = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getX(), Direction.RIGHT);
         final RangeClass cc = new RangeClass(RangeFlag.WALL, state.getPlayerState(), 9-GetPosition(state).getY(), Direction.DOWN);
@@ -339,8 +339,8 @@ public final class Utils {
             a=aa;b=bb;c=cc;d=dd;
         }
         else {
-            Position cPos = GetPosition(state);
-            Position ePos = GetPosition(state, eIdx);
+            //Position cPos = GetPosition(state);
+            //Position ePos = GetPosition(state, eIdx);
             List<Integer> info = GetEnemyInfo(eIdx, state);
             int range = info.get(1);
             int minX = Math.max(0, ePos.getX()-range);
@@ -407,15 +407,28 @@ public final class Utils {
         return paths;
     }
 
-    public static final List<RangeClass> GetEscapePath(AIState state) {
+    public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
+        return GetEscapePath(state, GetPosition(state), GetPosition(state, eIdx), eIdx);
+    }
+
+    public static final List<RangeClass> GetEscapePath(AIState state, List<List<RangeClass>> e) {
         List<RangeClass> res = GetEscapePath(state, state.getPlayerIndex());
         for(int i : GetEnemiesIndex(state)) {
-            List<RangeClass> lrc = GetEscapePath(state, i);
+            List<RangeClass> lrc = e.get(i);
             for(int j = 0; j < 4; ++j)
                 if(res.get(j).dist > lrc.get(j).dist)
                     res.set(j, lrc.get(j));
         }
         return res;
+    }
+
+    public static final List<RangeClass> GetEscapePath(AIState state) {
+        List<List<RangeClass>> e = new ArrayList<>();
+        e.add(GetEscapePath(state, 0));
+        e.add(GetEscapePath(state, 1)); 
+        e.add(GetEscapePath(state, 2));
+        e.add(GetEscapePath(state, 3));
+        return GetEscapePath(state, e);
     }
 
     public static final PlayerState maxScore(List<PlayerState> players) {

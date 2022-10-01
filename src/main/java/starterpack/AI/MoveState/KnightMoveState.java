@@ -73,13 +73,7 @@ public class KnightMoveState extends IMoveState{
             if (ePos.getY() > cPos.getY()) rawYMov *= -1;
             if (ePos.getX() > cPos.getX()) rawXMov *= -1;
             Position predicted = new Position(ePos.getX() + rawXMov, ePos.getY() + rawYMov);
-            //move towards enemy i is a safe action
-            if (Utility.chebyshevDistance(cPos, predicted) > range) {
-                safePlayerSet.add(i);
-            }
-            else {
-
-            }
+            
         }
         if(!safePlayerSet.isEmpty()) {
 
