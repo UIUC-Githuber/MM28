@@ -15,7 +15,7 @@ public class StrategyConfig {
     //else 
 
     if(playerIndex == 0){
-        return new HunterWizardStrategy();
+        return new WizardStrategy2();
      }
      if(playerIndex == 1){
         return new WizardStrategy();
@@ -26,7 +26,7 @@ public class StrategyConfig {
      }
 
      if(playerIndex == 2){
-        return new Naive2KnightStrategy();
+        return new CleverArcherStrategy();
      }
      return null;
     }
