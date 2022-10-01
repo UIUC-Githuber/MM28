@@ -169,6 +169,7 @@ public final class Utils {
         
         for(int i=0; i<3; i++){
             //get attack range of the enemy with index x = EnemyIndex.get(i);
+            
             int Range = state.getGameState().getPlayerStateByIndex(EnemyIndex.get(i)).getStatSet().getRange();
             List<Integer> Info = GetEnemyInfo(EnemyIndex.get(i), state);
             int Dist  = Info.get(0);       // distance between two players
@@ -176,7 +177,9 @@ public final class Utils {
                 DangerPlayer.add(state.getGameState().getPlayerStateByIndex(EnemyIndex.get(i)));
             }
         }
-
+        if(DangerPlayer.isEmpty()){
+            return null;  //if the list is empty, return null
+        }
         return DangerPlayer;
     }
 
