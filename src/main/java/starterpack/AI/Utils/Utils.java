@@ -12,7 +12,7 @@ import java.util.List;
 
 import starterpack.AI.AIState;
 import starterpack.AI.CharacterAI;
-
+import java.util.Collections;
 public final class Utils {
     // 
     public static final PlayerState MinHealthPlayer(AIState state) {
@@ -265,6 +265,18 @@ public final class Utils {
         }
         return maxplayer;
     }
+    public static final PlayerState minDamage(List<PlayerState> players) {
+        //return player with minRange
+        int min_ = players.get(0).getStatSet().getDamage();
+        PlayerState minplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getStatSet().getDamage() < min_) {
+                min_ = players.get(i).getStatSet().getDamage();
+                minplayer = players.get(i);
+            }
+        }
+        return minplayer;
+    }
 
     public static final int[] GetXandYRange(AIState state, int index) {
         //get position diff between you and other player
@@ -273,6 +285,152 @@ public final class Utils {
         int otherx = GetPosition(state, index).getX();
         int othery = GetPosition(state, index).getY();
         return new int[] {myx-otherx, myy- othery};
+    }
+    public static final List<PlayerState> GetEnemies(AIState state) {
+        List<PlayerState> otherplayers = new ArrayList<PlayerState>();
+        for (int i = 0; i < 4; i++) {
+            if(i != state.getPlayerIndex()) {
+                otherplayers.add(state.getGameState().getPlayerStateByIndex(i));
+            }
+        
+        }
+        return otherplayers;
+    }
+    public static final PlayerState minRange(List<PlayerState> players) {
+        //return player with minRange
+        int min_ = players.get(0).getStatSet().getRange();
+        PlayerState minplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getStatSet().getRange() < min_) {
+                min_ = players.get(i).getStatSet().getRange();
+                minplayer = players.get(i);
+            }
+        }
+        return minplayer;
+    }
+    public static final PlayerState maxRange(List<PlayerState> players) {
+        //return player with maxscore
+        int max_ = players.get(0).getStatSet().getRange();
+        PlayerState maxplayer = players.get(0);
+        for (int i = 1; i < players.size(); i++) {
+            if(players.get(i).getStatSet().getRange() > max_) {
+                max_ = players.get(i).getStatSet().getRange();
+                maxplayer = players.get(i);
+            }
+        }
+        return maxplayer;
+    }
+
+    public static final PlayerState GetLeastDangerousEnemy(List<PlayerState> otherplayers) {
+        //get least dangerous
+        //get least range, if equal range, get least damage,
+        //if damage same, get maxscore
+        List<Integer> range = new ArrayList<Integer>();
+        List<Integer> damage_ = new ArrayList<Integer>();
+        List<PlayerState> damagePlayers = new ArrayList<PlayerState>();
+        for (int i = 0; i< 3; i++) {
+            range.set(i, otherplayers.get(i).getStatSet().getRange());
+        }
+        int min_ = Collections.min(range);
+        int count = 0;
+        for(int i = 0; i< 3; i++) {
+            if(range.get(i) == min_)  {
+                count++;
+                damage_.set(i,otherplayers.get(i). getStatSet().getDamage());
+                damagePlayers.add(otherplayers.get(i));
+            }
+        }
+        if(count > 1) {
+            int countdamage = 0;
+            int minDam = Collections.min(damage_);
+            for(int i = 0; i < count; i++) {
+                if(damage_.get(i) == minDam)  
+                    countdamage++;
+            }
+            if(countdamage >1) {
+                return maxScore(damagePlayers);
+            } else {
+                return minDamage(damagePlayers);
+            }
+        } else  {
+            return minRange(otherplayers);
+        }
+
+
+    }
+    public static final PlayerState GetMostDangerousEnemy(List<PlayerState> otherplayers) {
+        //get most dangerous enemy
+        // if range greatest, if equal range, choose greatest damage
+        //if equal damage, choose maxscore
+
+        List<Integer> range = new ArrayList<Integer>();
+        List<Integer> damage_ = new ArrayList<Integer>();
+        List<PlayerState> damagePlayers = new ArrayList<PlayerState>();
+        for (int i = 0; i< 3; i++) {
+            range.set(i, otherplayers.get(i).getStatSet().getRange());
+        }
+        int max_ = Collections.max(range);
+        int count = 0;
+        for(int i = 0; i< 3; i++) {
+            if(range.get(i) == max_)  {
+                count++;
+                damage_.set(i,otherplayers.get(i). getStatSet().getDamage());
+                damagePlayers.add(otherplayers.get(i));
+            }
+        }
+        if(count > 1) {
+            int countdamage = 0;
+            int maxDam = Collections.max(damage_);
+            for(int i = 0; i < count; i++) {
+                if(damage_.get(i) == maxDam)  
+                    countdamage++;
+            }
+            if(countdamage >1) {
+                return maxScore(damagePlayers);
+            } else {
+                return maxDamage(damagePlayers);
+            }
+        } else  {
+            return maxRange(otherplayers);
+        }
+
+
+    }
+
+    public static final int ManhattanDistance(Position a, Position b) {
+        //return manhattandistance between two positions
+        int x1 =a.getX();
+        int y1 = a.getY();
+        int x2 = b.getX();
+        int y2 = b.getY();
+        return Math.abs(x1-x2) + Math.abs(y1-y2);
+
+        
+    }
+    public static final Position GetNearestPosition (AIState state, List<Position> otherpositions) {
+        //get nearest position out of a list of positions
+        int min_ = ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(0));
+        Position p  = otherpositions.get(0);
+        for (int i = 1; i < otherpositions.size(); i++) {
+            if (ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i)) < min_) {
+                min_ = ManhattanDistance(state.getPlayerState().getPosition(), otherpositions.get(i));
+                p = otherpositions.get(i);
+            }
+        }
+        return p;
+    }
+
+    public static final Position GetTruePosition(Position pos) {
+        //get true position if player could potentially go out of range
+        int x= pos.getX();
+        int y = pos.getY();
+        if(x<0) {
+            pos.setX(0);
+        } 
+        if(x>9) pos.setX(9);
+        if(y<0) pos.setY(0);
+        if(y>9) pos.setY(9);
+        return pos;
     }
 
     
