@@ -30,6 +30,18 @@ public class ArcherAttackState extends IAttackState{
         ///else attack greatest damage
         List<PlayerState> fatalbots = Utils.ListFindFatal(this);
         List<PlayerState> killingbots = new ArrayList<PlayerState>();
+
+        if(fatalbots == null) { // if none existFatal: attack greatest damage
+            List<PlayerState> otherplayers = new ArrayList<PlayerState>();
+            for (int i = 0; i < 4; i++) {
+                if(i != getPlayerIndex()) {
+                    otherplayers.add(getGameState().getPlayerStateByIndex(i));
+                }
+            }
+            return Utils.Getplayerindex(Utils.maxDamage(Utils.GetEnemies(this)), getGameState()); 
+
+        }
+
         for (int i =0; i< fatalbots.size(); i++) {
             if(Utils.DetectRangeGameState(getGameState(), Utils.Getplayerindex(fatalbots.get(i), gs), getPlayerIndex())) {
                 killingbots.add(fatalbots.get(i));
@@ -53,22 +65,13 @@ public class ArcherAttackState extends IAttackState{
 
 
         // if one existFatal: attack 
-        else if(fatalbots.size() == 1)  {
+        // else if(fatalbots.size() == 1)  {
+        else {
             return Utils.Getplayerindex(fatalbots.get(0), getGameState()); 
         }
 
-        // if none existFatal: attack greatest damage
-        else {
-            List<PlayerState> otherplayers = new ArrayList<PlayerState>();
-            for (int i = 0; i < 4; i++) {
-                if(i != getPlayerIndex()) {
-                    otherplayers.add(getGameState().getPlayerStateByIndex(i));
-                }
-            }
-            return Utils.Getplayerindex(Utils.maxDamage(killingbots), getGameState()); 
-        }
-
-
+        
+        
         
     }
 }
