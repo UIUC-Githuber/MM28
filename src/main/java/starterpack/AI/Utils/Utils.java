@@ -356,20 +356,25 @@ public final class Utils {
             //Position ePos = GetPosition(state, eIdx);
             List<Integer> info = GetEnemyInfo(eIdx, state);
             int range = info.get(1);
+            Main.LOGGER.info("ePos:" + ePos.toString());
             int minX = Math.max(0, ePos.getX()-range);
             int maxX = Math.min(9, ePos.getX()+range);
             int minY = Math.max(0, ePos.getY()-range);
             int maxY = Math.min(9, ePos.getY()+range);
+            Main.LOGGER.info("minX=" + String.valueOf(minX)+";maxX=" + String.valueOf(maxX)+";minY=" + String.valueOf(minY)+";maxY=" + String.valueOf(maxY));
+            Main.LOGGER.info("cPos.getX()=" + String.valueOf(cPos.getX()) + "; cPos.getY()=" + String.valueOf(cPos.getY()));
             if(!(cPos.getX() > minX && cPos.getX() < maxX && cPos.getY() > minY && cPos.getY() < maxY)) { // not dangered
                 if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() < minY) {
                     a = aa; b = bb; c = cc; d = dd;
                 }
                 else if(cPos.getX() >= minX && cPos.getX() <= maxX && cPos.getY() < minY) {
                     a = aa; b = bb; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(minY - cPos.getY()));
                     c = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minY - cPos.getY(), Direction.DOWN);
                 }
                 else if(cPos.getX() < minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
                     a = aa; c = cc; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(minX - cPos.getX()));
                     b = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), minX - cPos.getX(), Direction.RIGHT);
                 }
                 else if(cPos.getX() == minX && cPos.getY() >= minY && cPos.getY() <= maxY) {
@@ -398,6 +403,7 @@ public final class Utils {
                 }
                 else if(cPos.getX() > maxX && cPos.getY() >= minY && cPos.getY() <= maxY) {
                     a = aa; c = cc; b = bb;
+                    Main.LOGGER.info("debug:"+String.valueOf(cPos.getX() - maxX));
                     d = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getX() - maxX, Direction.RIGHT);
                 }
                 else if((cPos.getX() < minX || cPos.getX() > maxX) && cPos.getY() > maxY) {
@@ -405,6 +411,7 @@ public final class Utils {
                 }
                 else {
                     b = bb; c = cc; d = dd;
+                    Main.LOGGER.info("debug:" + String.valueOf(cPos.getY() - maxY));
                     a = new RangeClass(RangeFlag.PLAYER, state.getGameState().getPlayerStateByIndex(eIdx), cPos.getY() - maxY, Direction.UP);
                 }
             }
@@ -417,6 +424,8 @@ public final class Utils {
         }
         List<RangeClass> paths = new ArrayList<>();
         paths.add(a);paths.add(b);paths.add(c);paths.add(d);
+        Main.LOGGER.info(String.valueOf(a.dist) + " " + String.valueOf(b.dist) + " " + String.valueOf(c.dist) + " " + String.valueOf(d.dist));
+        Main.LOGGER.info("---");
         return paths;
     }
 

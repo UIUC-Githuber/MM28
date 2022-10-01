@@ -1,0 +1,26 @@
+{
+  "name": "mm28",
+  "version": "1.1.1",
+  "description": "Thank you for coming out to MechMania 28!",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "mm28": "^1.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UIUC-Githuber/MM28.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UIUC-Githuber/MM28/issues"
+  },
+  "homepage": "https://github.com/UIUC-Githuber/MM28#readme"
+}

@@ -52,9 +52,10 @@ public class KnightStrategy implements Strategy {
      * @return
      */
     public int attackActionDecision(GameState gameState, int myPlayerIndex) {
-        //Main.LOGGER.info("knight attacking");
+        Main.LOGGER.info("knight attacking");
         KnightAttackState attackState = new KnightAttackState(gameState, myPlayerIndex);
         return attackState.Update();
+        //return myPlayerIndex;
     }
 
     /**
