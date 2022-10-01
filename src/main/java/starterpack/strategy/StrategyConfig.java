@@ -12,7 +12,21 @@ public class StrategyConfig {
     //if (playerIndex == 0 ||playerIndex == 1) return new KnightStrategy();
     //else 
 
-     return new ArcherStrategy();
+    if(playerIndex == 0){
+        return new KnightStrategy();
+     }
+     if(playerIndex == 1){
+        return new ArcherStrategy();
+     }
+
+     if(playerIndex == 2){
+        return new KnightStrategy();
+     }
+
+     if(playerIndex == 3){
+        return  new KnightStrategy();
+     }
+     return  null;
     }
 
 }
