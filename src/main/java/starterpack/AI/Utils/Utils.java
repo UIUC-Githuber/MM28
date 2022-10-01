@@ -235,14 +235,11 @@ public final class Utils {
         GameState gs = state.getGameState();
         return gs.getPlayerStateByIndex(state.getPlayerIndex()).getPosition();
     }
+    
     public static final Position GetPosition(AIState state, int index) {
         //get position of player[index]
         GameState gs = state.getGameState();
         return gs.getPlayerStateByIndex(index).getPosition();
-    }
-
-    public static final Position GetPosition(AIState state) {
-        return GetPosition(state, state.getPlayerIndex());
     }
 
     public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
