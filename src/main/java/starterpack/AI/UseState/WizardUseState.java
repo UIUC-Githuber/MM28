@@ -4,6 +4,11 @@ import starterpack.game.GameState;
 
 public class WizardUseState extends IUseState{
 
+    public WizardUseState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public void Update() {
         // TODO Auto-generated method stub
@@ -11,7 +16,7 @@ public class WizardUseState extends IUseState{
     }
 
     @Override
-    public void Use(GameState gameState) {
+    public void Use() {
         // TODO Auto-generated method stub
         
     }

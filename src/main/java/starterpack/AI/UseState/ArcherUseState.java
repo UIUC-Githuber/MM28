@@ -4,14 +4,18 @@ import starterpack.game.GameState;
 
 public class ArcherUseState extends IUseState{
 
-    @Override
-    public void Update() {
-        // TODO Auto-generated method stub
-        
+    public ArcherUseState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+        //TODO Auto-generated constructor stub
     }
 
     @Override
-    public void Use(GameState gameState) {
+    public void Update() {
+        // TODO Auto-generated method stub   
+    }
+
+    @Override
+    public void Use() {
         // TODO Auto-generated method stub
         
     }

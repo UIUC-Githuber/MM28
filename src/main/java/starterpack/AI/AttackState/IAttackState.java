@@ -4,5 +4,10 @@ import starterpack.AI.AIState;
 import starterpack.game.GameState;
 
 public abstract class IAttackState extends AIState{
-    public abstract void Attack(GameState gameState);
+    public IAttackState(GameState gameState, int playerIndex) {
+        super(gameState, playerIndex);
+        //TODO Auto-generated constructor stub
+    }
+
+    public abstract void Attack();
 }
