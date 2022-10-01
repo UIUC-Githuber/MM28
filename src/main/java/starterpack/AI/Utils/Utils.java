@@ -186,6 +186,7 @@ public final class Utils {
 
     }
     public static final int Getplayerindex (PlayerState player, GameState gs) {
+        //get player corresponding index
         int index =-1;
         for (int i =0; i < 4; i++) {
             if(player == (gs.getPlayerStateByIndex(i))) index = i;
@@ -240,6 +241,7 @@ public final class Utils {
     }
 
     public static final PlayerState maxScore(List<PlayerState> players) {
+        //return player with maxscore
         int max_ = players.get(0).getScore();
         PlayerState maxplayer = players.get(0);
         for (int i = 1; i < players.size(); i++) {
@@ -252,6 +254,7 @@ public final class Utils {
     }
 
     public static final PlayerState maxDamage(List<PlayerState> players) {
+        //return maxDamage player in a playerlist
         int max_ = players.get(0).getStatSet().getDamage();
         PlayerState maxplayer = players.get(0);
         for (int i = 1; i < players.size(); i++) {
@@ -261,6 +264,15 @@ public final class Utils {
             }
         }
         return maxplayer;
+    }
+
+    public static final int[] GetXandYRange(AIState state, int index) {
+        //get position diff between you and other player
+        int myx = GetPosition(state).getX();
+        int myy = GetPosition(state).getY();
+        int otherx = GetPosition(state, index).getX();
+        int othery = GetPosition(state, index).getY();
+        return new int[] {myx-otherx, myy- othery};
     }
 
     
