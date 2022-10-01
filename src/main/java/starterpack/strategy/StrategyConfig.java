@@ -10,6 +10,9 @@ public class StrategyConfig {
     public static Strategy getStrategy(int playerIndex) {
     //    if (playerIndex == 0) return new OnlyBuyAndUseShieldStrategy();
     //    else return new OnlyGoto00AndAttackStrategy();
+    if(playerIndex==0){
         return new KnightStrategy();
     }
+    
+    return new RandomStrategy();
 }
