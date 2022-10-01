@@ -71,7 +71,7 @@ public class WizardMoveState extends IMoveState{
         // int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
         if(cPos.getY() > kbest.getY()) rawYMov *= -1;
         if(cPos.getX() > kbest.getX()) rawXMov *= -1;
-        Position idealPosChange = new Position(rawXMov, rawYMov);
+        Position idealPosChange = new Position(x + rawXMov, y + rawYMov);
         // Position idealPosChange = new Position(newx, newy);
         return idealPosChange;
         

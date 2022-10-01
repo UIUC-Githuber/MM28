@@ -14,9 +14,9 @@ import starterpack.game.PlayerState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
 
-public class ArcherMoveState extends IMoveState {
+public class HunterWizardMoveState extends IMoveState {
 
-    public ArcherMoveState(GameState gameState, int playerIndex) {
+    public HunterWizardMoveState(GameState gameState, int playerIndex) {
         super(gameState, playerIndex);
         // TODO Auto-generated constructor stub
     }
@@ -45,7 +45,7 @@ public class ArcherMoveState extends IMoveState {
         if (dangerousPlayerStateList == null || dangerousPlayerStateList.size() == 0) {
             //it shows that Archer is safe now and can actively find target to kill
             PlayerState target = Utils.GetNearestPlayerState(this);
-            resultPosition = Utils.GetAttackPositionInRangeArcher(this, Utils.Getplayerindex(target, getGameState()));
+            resultPosition = Utils.GetAttackPositionInRangeWizard(this, Utils.Getplayerindex(target, getGameState()));
         } else {
             //it shows that Archer is in danger now and need to be away from the enemies
             List<RangeClass> rangeClassList = Utils.GetEscapePath(this);
