@@ -7,6 +7,7 @@ import java.util.Map;
 
 import starterpack.Main;
 import starterpack.AI.Utils.Utils;
+import starterpack.AI.Utils.range.RangeClass;
 import starterpack.game.GameState;
 import starterpack.game.Position;
 import starterpack.util.Utility;
@@ -55,9 +56,9 @@ public class KnightMoveState extends IMoveState{
         if(cPos.getX() > kbest.getX()) rawXMov *= -1;
         Position idealPosChange = new Position(rawXMov, rawYMov);
         // Get Other 3 Players' Position
-        List<Integer> safePlayerSet = new ArrayList<>();
         Map<Integer, List<Integer>> infoSet = new HashMap<>();
-        Position posMaxMove = new Position(0,0);
+        List<List<RangeClass>> rcList = new ArrayList<>();
+        // Predict the next movement of other players and find the escape path
         for(int i : Utils.GetEnemiesIndex(this)) {
             Position ePos = Utils.GetPosition(this, i);
             List<Integer> info = Utils.GetEnemyInfo(i, this);
@@ -73,12 +74,62 @@ public class KnightMoveState extends IMoveState{
             if (ePos.getY() > cPos.getY()) rawYMov *= -1;
             if (ePos.getX() > cPos.getX()) rawXMov *= -1;
             Position predicted = new Position(ePos.getX() + rawXMov, ePos.getY() + rawYMov);
-            Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
+            List<RangeClass> ep = Utils.GetEscapePath(this, Utils.GetPosition(this), predicted, i);
+            rcList.add(ep);
         }
-        if(!safePlayerSet.isEmpty()) {
+        List<RangeClass> rcfinal = Utils.GetEscapePath(this, rcList);
+        // Unstable Move: (Prob 0.3) Ignore the dangers
+        if (Math.random() * 10 <= 3) return new Position(cPos.getX() + idealPosChange.getX(), cPos.getY() + idealPosChange.getY());
+        // Stable Move: Follow the boarder first, then the target
+        Main.LOGGER.info("HERE STABLE MOVE");
+        String msg;
+        if (idealPosChange.getX() > 0) { // Compare b
+            msg = "Compare b: " + String.valueOf(idealPosChange.getX()) + " and ";
+            if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
+                msg += String.valueOf(-rcfinal.get(3).dist);
+                idealPosChange.setX(Math.min(idealPosChange.getX(), -rcfinal.get(3).dist));
+            }
+            else {
+                msg += String.valueOf(rcfinal.get(1).dist);
+                idealPosChange.setX(Math.min(idealPosChange.getX(), rcfinal.get(1).dist));
+            }
+        }
+        else { // Compare d
+            msg = "Compare d: " + String.valueOf(idealPosChange.getX()) + " and ";
+            if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
+                msg += String.valueOf(rcfinal.get(1).dist);
+                idealPosChange.setX(Math.max(idealPosChange.getX(), rcfinal.get(1).dist));
+            }
+            else {
+                msg += String.valueOf(-rcfinal.get(3).dist);
+                idealPosChange.setX(Math.max(idealPosChange.getX(), -rcfinal.get(3).dist));
+            }
+        }
 
+        if (idealPosChange.getY() > 0) { // Compare c
+            msg += " ; Compare c: " + String.valueOf(idealPosChange.getY()) + " and ";
+            if(rcfinal.get(0).dist + rcfinal.get(2).dist <= 0) {
+                msg += String.valueOf(-rcfinal.get(0).dist);
+                idealPosChange.setY(Math.min(idealPosChange.getY(), -rcfinal.get(0).dist));
+            }
+            else {
+                msg += String.valueOf(rcfinal.get(2).dist);
+                idealPosChange.setX(Math.min(idealPosChange.getX(), rcfinal.get(2).dist));
+            }
         }
-        return new Position(0,0); //TODO
+        else { // Compare a
+            msg += " ; Compare a: " + String.valueOf(idealPosChange.getY()) + " and ";
+            if(rcfinal.get(1).dist + rcfinal.get(3).dist <= 0) {
+                msg += String.valueOf(rcfinal.get(2).dist);
+                idealPosChange.setX(Math.max(idealPosChange.getX(), rcfinal.get(2).dist));
+            }
+            else {
+                msg += String.valueOf(-rcfinal.get(0).dist);
+                idealPosChange.setX(Math.max(idealPosChange.getX(), -rcfinal.get(0).dist));
+            }
+        }
+        Main.LOGGER.info(msg);
+        return new Position(cPos.getX() + idealPosChange.getX(), cPos.getY() + idealPosChange.getY());
     }
 
     @Override

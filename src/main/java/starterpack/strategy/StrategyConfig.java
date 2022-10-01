@@ -1,5 +1,7 @@
 package starterpack.strategy;
 
+import starterpack.AI.MoveState.NaiveKnightMoveState;
+
 public class StrategyConfig {
 
     /**
@@ -16,7 +18,7 @@ public class StrategyConfig {
         return new KnightStrategy();
      }
      if(playerIndex == 1){
-        return new ArcherStrategy();
+        return new KnightStrategy();
      }
 
      if(playerIndex == 2){
