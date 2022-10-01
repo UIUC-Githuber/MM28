@@ -29,7 +29,6 @@ public class StrategyConfig {
      if(playerIndex == 3){
         return new KnightStrategy();
      }
-     return null;
-    }
+     }
 
 }

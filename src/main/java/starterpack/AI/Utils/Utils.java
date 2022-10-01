@@ -371,12 +371,12 @@ public final class Utils {
         resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
         switch(state.getGameState().getPlayerStateByIndex(playerindex).getCharacterClass()){
             case ARCHER:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             case KNIGHT:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -1); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             break;
             case WIZARD:
-                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), -4); 
+                resultPosition = GetPositionByLine(state, GetNearestPosition(state, positionList), 0); 
             break;
         }
         return resultPosition;
@@ -901,6 +901,47 @@ public final class Utils {
         } else  {
             return minRange(otherplayers);
         }
+    }
+
+    public static final Position GetNearSpawnPosition(int playerindex){
+        Position nearSpawnPoint = new Position();
+        if(playerindex==0){
+            nearSpawnPoint.setX(2);
+            nearSpawnPoint.setY(2);
+        }
+        else if(playerindex==1){
+            nearSpawnPoint.setX(7);
+            nearSpawnPoint.setY(2);
+        }
+        else if(playerindex==2){
+            nearSpawnPoint.setX(7);
+            nearSpawnPoint.setY(7);
+        }
+        else{
+            nearSpawnPoint.setX(2);
+            nearSpawnPoint.setY(7);
+        }
+
+        return  nearSpawnPoint;
+
+    }
+
+    static final List<PlayerState> GetAllPlayerStateInRange(AIState state){
+        List<PlayerState> PlayerInRange = new ArrayList<>();
+        List<Integer> EnemiesIndex =  GetEnemiesIndex(state);
+        int currentIndex;
+        int currentDist;
+
+        for(int i=0; i<3; i++){
+            currentIndex = EnemiesIndex.get(i);
+            List<Integer> info = GetEnemyInfo(currentIndex, state);
+            currentDist = info.get(0);
+            if(currentDist <= state.getPlayerState().getStatSet().getRange()){
+                PlayerInRange.add(state.getGameState().getPlayerStateByIndex(currentIndex));
+            }
+        }
+        
+        return PlayerInRange;        
     }
     
 }
