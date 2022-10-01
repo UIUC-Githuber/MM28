@@ -1,7 +1,9 @@
 package starterpack.AI.MoveState;
 
+import java.lang.System.Logger;
 import java.util.List;
 
+import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
@@ -25,12 +27,14 @@ public class ArcherMoveState extends IMoveState{
     public Position Move() {
         PlayerState target;
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
+        Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList);
         if(playerStateList == null||playerStateList.size()==0){
             target = Utils.GetNearestPlayerState(this);
         }
         else{
            
             target = Utils.GetMostDangerousEnemy(playerStateList);
+            Main.LOGGER.info("Utils.GetMostDangerousEnemy: "+target);
                 //int rangeArray[] = new int[4];
                 //rangeArray = Util.GetRangeBox();
                 
@@ -48,8 +52,9 @@ public class ArcherMoveState extends IMoveState{
             }
             
         }
-
-        return Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()) );
+        Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
+        Main.LOGGER.info("result: "+result);
+        return result;
     }
 
     @Override
