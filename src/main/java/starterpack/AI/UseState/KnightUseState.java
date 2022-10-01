@@ -12,7 +12,7 @@ public class KnightUseState extends IUseState{
 
     @Override
     public boolean Update() {
-        return false;
+        return true;
     }
 
     @Override
