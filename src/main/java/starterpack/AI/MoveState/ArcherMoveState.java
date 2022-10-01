@@ -27,9 +27,5 @@ public class ArcherMoveState extends IMoveState{
         
     }
 
-    @Override
-    public void Teleport() {
-        // TODO Auto-generated method stub
-        
-    }
+
 }
