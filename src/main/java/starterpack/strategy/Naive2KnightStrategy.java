@@ -14,7 +14,7 @@ import starterpack.AI.MoveState.Naive2KnightMoveState;
 import starterpack.AI.MoveState.NaiveKnightMoveState;
 import starterpack.AI.UseState.KnightUseState;;
 
-public class Naive2KnightMoveStrategy implements Strategy {
+public class Naive2KnightStrategy implements Strategy {
 
     /**
      * When the game initializes, you need to decide your starting class!
