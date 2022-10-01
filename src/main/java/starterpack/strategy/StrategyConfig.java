@@ -17,6 +17,7 @@ public class StrategyConfig {
     if(playerIndex == 0){
         return new WizardStrategy();
      }
+
      if(playerIndex == 1){
         return new WizardStrategy();
      }
@@ -27,6 +28,7 @@ public class StrategyConfig {
 
      if(playerIndex == 3){
         return new WizardStrategy();
+
      }
      return null;
     }

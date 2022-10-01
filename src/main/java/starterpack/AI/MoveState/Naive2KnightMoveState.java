@@ -8,6 +8,7 @@ import java.util.Map;
 import starterpack.Main;
 import starterpack.AI.Utils.Utils;
 import starterpack.game.GameState;
+import starterpack.game.Item;
 import starterpack.game.Position;
 import starterpack.util.Utility;
 import org.apache.logging.log4j.Level;
@@ -28,6 +29,10 @@ public class Naive2KnightMoveState extends IMoveState{
         if (tele != null) return tele;
         return Move2();
         
+    }
+
+    public Position TeleForced(){
+        return Utility.spawnPoints.get(getPlayerIndex());
     }
 
 
@@ -65,7 +70,7 @@ public class Naive2KnightMoveState extends IMoveState{
         else{
             SignOfDirectionY = 1;
         }
-        
+        //Decide the steps need to be taken in x and y direction
         Position DestinationNext = new Position();
         int MySpeed = this.getPlayerState().getStatSet().getSpeed();
         if(Math.abs(xdiff)>Math.abs(ydiff)){
@@ -81,6 +86,11 @@ public class Naive2KnightMoveState extends IMoveState{
             DestinationNext.setX(NewX+MyPosition.getX());
         }
 
+        //if we can't get to the crown next rount, fource tele, and just buy something.
+        if(this.getPlayerState().getGold() >= 8 && xdiff+ydiff >= MySpeed && getPlayerState().getItem()==Item.NONE){ 
+            return this.TeleForced();
+        }
+        Main.LOGGER.info("The gold of bot 3 is: "+ this.getPlayerState().getGold());
         return  DestinationNext;
     }
 

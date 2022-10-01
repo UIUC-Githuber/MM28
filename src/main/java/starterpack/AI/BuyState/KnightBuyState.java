@@ -18,7 +18,7 @@ public class KnightBuyState extends IBuyState{
 
     @Override
     public Item Buy() {
-        if(getPlayerState().getGold()>=Item.SHIELD.getCost()){
+        if(getPlayerState().getGold()>=8 && getPlayerState().getItem()==Item.NONE){
             return Item.ANEMOI_WINGS;
         }
         else{

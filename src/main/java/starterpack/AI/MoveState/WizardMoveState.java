@@ -2,7 +2,10 @@ package starterpack.AI.MoveState;
 
 import starterpack.game.GameState;
 import starterpack.game.Position;
-import starterpack.AI.Utils.*;;
+import starterpack.AI.Utils.*;
+import starterpack.game.Item;
+import starterpack.game.PlayerState;
+import starterpack.util.Utility;
 public class WizardMoveState extends IMoveState{
 
     public WizardMoveState(GameState gameState, int playerIndex) {
@@ -17,6 +20,13 @@ public class WizardMoveState extends IMoveState{
         if (tele != null) return tele;
         return Move();
         
+    }
+    @Override
+    public Position Teleport(){
+        if(getPlayerState().getItem()==Item.NONE && getPlayerState().getGold()>=8){
+            return Utility.spawnPoints.get(getPlayerIndex());
+        }
+        return super.Teleport();
     }
 
     @Override
@@ -42,21 +52,6 @@ public class WizardMoveState extends IMoveState{
         if(ydiff + xdiff <= Utils.GetSpeed(this)) return kbest;
         int x = cPos.getX();
         int y = cPos.getY();
-        // int newx = 4;
-        // int newy = 4;
-        // if(x <= 4 && y <= 4) {
-        //     newx = Utils.GetSpeed(this) / 2 + x;
-        //     newy = Utils.GetSpeed(this) - newx + y;
-        // } else if(x >=5 && y <= 4 ) {
-        //     newx = x - Utils.GetSpeed(this) / 2;
-        //     newy = Utils.GetSpeed(this) - newx + y;
-        // } else if(x <= 4 && y >= 5) {
-        //     newx = x + Utils.GetSpeed(this) / 2;
-        //     newy = y - (Utils.GetSpeed(this) - newx);
-        // } else {
-        //     newx = x - Utils.GetSpeed(this) / 2;
-        //     newy = y - (Utils.GetSpeed(this) - newx);
-        // }
         double slope = Math.abs(ydiff / (double) xdiff);
         int rawYMov = 0;
         int rawXMov = 0;
