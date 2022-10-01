@@ -18,15 +18,15 @@ public class KnightMoveState extends IMoveState{
     }
 
     @Override
-    public void Update() {
-        // TODO Auto-generated method stub
+    public Position Update() {
+        return Move();
         
     }
 
     @Override
     public Position Move() {
         // TODO Auto-generated method stub
-        Position cPos = Utils.GetPosition(this);
+        Position cPos = Utils.GetPosition(this, getPlayerIndex());
         int ydiff = 4 - cPos.getY();
         int xdiff = 4 - cPos.getX();
         double slope = Math.abs(ydiff / (double) xdiff);
