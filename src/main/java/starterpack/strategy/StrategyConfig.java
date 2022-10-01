@@ -17,16 +17,16 @@ public class StrategyConfig {
     if(playerIndex == 0){
         return new ArcherStrategy();
      }
-     if(playerIndex == 1){
-        return new ArcherStrategy();
+     if(playerIndex == 2){
+        return new WizardStrategy();
      }
 
-     if(playerIndex == 2){
+     if(playerIndex == 1){
         return new KnightStrategy();
      }
 
      if(playerIndex == 3){
-        return new KnightStrategy();
+        return new Naive2KnightMoveStrategy();
      }
      return null;
     }
