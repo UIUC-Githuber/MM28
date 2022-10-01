@@ -19,23 +19,31 @@ public class ArcherMoveState extends IMoveState{
 
     @Override
     public Position Update() {
-        return Move();
+        return NaiveMove();
         
     }
-
+    public Position NaiveMove(){
+        PlayerState target = Utils.GetNearestPlayerState(this);
+        Main.LOGGER.info("playerid = "+ Utils.Getplayerindex(target, getGameState()));
+        Position targePosition = Utils.GetPosition(this, Utils.Getplayerindex(target, getGameState()));
+        Main.LOGGER.info("moveTo: x = "+targePosition.getX()+" y = "+targePosition.getY());
+        Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
+        Main.LOGGER.info("moveTo: x = "+result.getX()+" y = "+result.getY());
+        return result;
+    }
     @Override
     public Position Move() {
         PlayerState target;
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
-        for(int i=0;i<playerStateList.size();i++){
-            Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList.get(i));
-        }
-        
         if(playerStateList == null||playerStateList.size()==0){
+            //if you are safe now, search for a hunter target
             target = Utils.GetNearestPlayerState(this);
+            Main.LOGGER.info("Utils.GetDangerousPlayerState: "+target);
         }
         else{
-           
+            for(int i=0;i<playerStateList.size();i++){
+                Main.LOGGER.info("Utils.GetDangerousPlayerState: "+playerStateList.get(i));
+            }
             target = Utils.GetMostDangerousEnemy(playerStateList);
             Main.LOGGER.info("Utils.GetMostDangerousEnemy: "+target);
                 //int rangeArray[] = new int[4];
@@ -55,8 +63,9 @@ public class ArcherMoveState extends IMoveState{
             }
             
         }
+        //Position result = Utils.Getplayerindex(target, getGameState());
         Position result = Utils.GetAttackPositionInRange(this, Utils.Getplayerindex(target, getGameState()));
-        Main.LOGGER.info("result: "+result);
+        Main.LOGGER.info("moveTo: x = "+result.getX()+" y = "+result.getY());
         return result;
     }
 
