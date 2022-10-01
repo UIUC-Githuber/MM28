@@ -1,6 +1,7 @@
 package starterpack.AI.UseState;
 
 import starterpack.game.GameState;
+import starterpack.game.Item;
 
 public class WizardUseState extends IUseState{
 
@@ -15,6 +16,8 @@ public class WizardUseState extends IUseState{
 
     @Override
     public boolean Use() {
+        if(getPlayerState().getItem() != Item.NONE)
+            return true;
         return false;
         
     }
