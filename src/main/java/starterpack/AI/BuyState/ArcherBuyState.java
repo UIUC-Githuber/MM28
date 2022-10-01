@@ -13,7 +13,7 @@ public class ArcherBuyState extends IBuyState {
 
     @Override
     public Item Update() {
-        return Item.NONE;
+        return Buy();
     }
 
     @Override
