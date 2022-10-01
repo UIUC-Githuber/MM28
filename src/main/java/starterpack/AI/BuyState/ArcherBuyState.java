@@ -1,12 +1,13 @@
-package starterpack.AI.ItemState;
+package starterpack.AI.BuyState;
 
 import starterpack.game.Item;
 
-public class KnightItemState extends IItemState{
+public class ArcherBuyState extends IBuyState {
 
     @Override
     public void Buy(Item item) {
         // TODO Auto-generated method stub
+        
     }
 
     @Override

@@ -1,17 +1,17 @@
-package starterpack.AI.ItemState;
+package starterpack.AI.UseState;
 
 import starterpack.game.Item;
 
-public class ArcherItemState extends IItemState {
+public class WizardUseState extends IUseState{
 
     @Override
-    public void Buy(Item item) {
+    public void Update() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void Update() {
+    public void Use(Item item) {
         // TODO Auto-generated method stub
         
     }
