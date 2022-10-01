@@ -724,6 +724,4 @@ public final class Utils {
             return minRange(otherplayers);
         }
     }
-
 }
-
