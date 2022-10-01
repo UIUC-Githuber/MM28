@@ -35,7 +35,7 @@ public class NaiveKnightMoveState extends IMoveState{
         //LogManager.getLogger(Main.class.getName()).info("move");
         // TODO Auto-generated method stub
         Position cPos = Utils.GetPosition(this, getPlayerIndex());
-        Position kbest = null;
+        Position kbest = null; //nearest crown
         switch (getPlayerIndex()){
             case 0:
             kbest = new Position(4,4);
@@ -51,12 +51,15 @@ public class NaiveKnightMoveState extends IMoveState{
             break;
         }
         int ydiff = Math.abs(kbest.getY() - cPos.getY());
-        int xdiff = Math.abs(kbest.getX() - cPos.getX());
-        double slope = Math.abs(ydiff / (double) xdiff);
-        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));
+        int xdiff = Math.abs(kbest.getX() - cPos.getX()); // dist between best crown and us
+        double slope = Math.abs(ydiff / (double) xdiff);  
+        
+        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(this)));  //Y and X movement
         int rawXMov = Math.min(xdiff, Utils.GetSpeed(this) - rawYMov);
-        if(cPos.getY() > kbest.getY()) rawYMov *= -1;
+        
+        if(cPos.getY() > kbest.getY()) rawYMov *= -1;  //sign of movement
         if(cPos.getX() > kbest.getX()) rawXMov *= -1;
+        
         Main.LOGGER.info("[" + cPos.getX() + "," + cPos.getY() + "]" + " -> cb[" + String.valueOf(rawXMov) + "," + String.valueOf(rawYMov) + "]");
         return new Position(cPos.getX() + rawXMov, cPos.getY() + rawYMov);
         // Get Other 3 Players' Position
@@ -92,6 +95,8 @@ public class NaiveKnightMoveState extends IMoveState{
         }
         */
     }
+
+    
 
     @Override
     public void DetectTarget() {

@@ -16,7 +16,7 @@ public class StrategyConfig {
         return new KnightStrategy();
      }
      if(playerIndex == 1){
-        return new ArcherStrategy();
+        return new KnightStrategy();
      }
 
      if(playerIndex == 2){
