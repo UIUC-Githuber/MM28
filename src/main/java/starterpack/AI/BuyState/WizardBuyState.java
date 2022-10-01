@@ -18,7 +18,7 @@ public class WizardBuyState extends IBuyState{
 
     @Override
     public Item Buy() {
-        if(getPlayerState().getGold()>=8){
+        if(getPlayerState().getGold()>=8 && getPlayerState().getItem()==Item.NONE){
             
             return MoreDamage();
         }
