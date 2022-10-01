@@ -18,7 +18,7 @@ public class StrategyConfig {
         return new WizardStrategy2();
      }
      if(playerIndex == 1){
-        return new WizardStrategy();
+        return new Naive2KnightStrategy();
      }
 
      if(playerIndex == 3){

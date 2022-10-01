@@ -17,9 +17,9 @@ public class ArcherUseState extends IUseState{
 
     @Override
     public boolean Use() {
-        if(Utils.GetDangerousPlayerState(this)!=null || Utils.GetDangerousPlayerState(this).size()>0){
-            return true;
+        if(Utils.GetDangerousPlayerState(this)==null || Utils.GetDangerousPlayerState(this).size()==0){
+            return false;
         }
-        return false;
+        return true;
     }
 }

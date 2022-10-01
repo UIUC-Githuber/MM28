@@ -859,7 +859,7 @@ public final class Utils {
 
     }
 
-    static final List<PlayerState> GetAllPlayerStateInRange(AIState state){
+    public static final List<PlayerState> GetAllPlayerStateInRange(AIState state){
         List<PlayerState> PlayerInRange = new ArrayList<>();
         List<Integer> EnemiesIndex =  GetEnemiesIndex(state);
         int currentIndex;
