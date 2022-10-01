@@ -235,7 +235,7 @@ public final class Utils {
         GameState gs = state.getGameState();
         return gs.getPlayerStateByIndex(state.getPlayerIndex()).getPosition();
     }
-    
+
     public static final Position GetPosition(AIState state, int index) {
         //get position of player[index]
         GameState gs = state.getGameState();
@@ -284,6 +284,7 @@ public final class Utils {
         if(myPos.getY() > targetPos.getY()) {rawYMov *= -1;}
         if(myPos.getX() > targetPos.getX()) {rawXMov *= -1;}
         return new Position(myPos.getX()+rawXMov, myPos.getY()+rawYMov);
+    }
 
     public static final List<RangeClass> GetEscapePath (AIState state, int eIdx) {
         final RangeClass aa = new RangeClass(RangeFlag.WALL, state.getPlayerState(), GetPosition(state).getY(), Direction.UP);
