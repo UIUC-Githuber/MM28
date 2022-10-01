@@ -198,6 +198,49 @@ public final class Utils {
         return gs.getPlayerStateByIndex(index).getPosition();
     }
 
+    //This Method may has problem
+    public static final Position GetAttackPositionInRange(AIState state, int playerindex){
+        GameState gs = state.getGameState();
+        Position a = GetPosition(state, state.getPlayerIndex()); //My Postion
+        Position b = GetPosition(state, playerindex); //Enemy Position
+        int attackRange = state.getPlayerState().getStatSet().getRange(); //My AttackRange
+        int x = b.getX();
+        int y = b.getY();
+        int index = 0;
+        Position b_min = new Position(x-attackRange, y-attackRange);
+        Position b_max = new Position(x+attackRange, y+attackRange);
+        List<Position> postionList = new ArrayList<Position>();
+        if(Utility.manhattanDistance(a, b_min)<Utility.manhattanDistance(a, b_max)){
+            //it implyes that My position is closer to the left-up corner of the enemy position, we use manhattanDistance here
+            for(int i=0;i<=attackRange;i++){
+                //we use <= because we should also include the right corner
+                postionList.add(GetTruePosition((new Position(b_min.getX()+i, b_min.getY()))));
+                postionList.add(GetTruePosition((new Position(b_min.getX(), b_min.getY()+i))));
+            }
+        }
+        else{
+            //it implyes that My position is closer to the right-down corner of the enemy position
+            for(int i=0;i<=attackRange;i++){
+                //we use <= because we should also include the right corner
+                postionList.add(GetTruePosition(new Position(b_max.getX()-i, b_max.getY())));
+                postionList.add(GetTruePosition((new Position(b_max.getX(), b_max.getY()-i))));
+            }
+        }
+        return GetPositionByLine(state, GetNearestPosition(positionList)); //this nearest position that can be reach by your character on once. 
+    }
+
+    //return the maximum range position you can achieve with a certain line that is given by your pos and the targetPos
+    public static final Position GetPositionByLine(AIState state, Position targetPos){
+        Position myPos = GetPosition(state, state.getPlayerIndex()); //My Postion
+        int ydiff = Math.abs(targetPos.getY() - myPos.getY());
+        int xdiff = Math.abs(targetPos.getX() - myPos.getX());
+        double slope = Math.abs(ydiff / (double) xdiff);
+        int rawYMov = Math.min(ydiff, (int)Math.round(slope * Utils.GetSpeed(state)));
+        int rawXMov = Math.min(xdiff, Utils.GetSpeed(state) - rawYMov);
+        if(myPos.getY() > targetPos.getY()) {rawYMov *= -1;}
+        if(myPos.getX() > targetPos.getX()) {rawXMov *= -1;}
+        return new Position(myPos.getX()+rawXMov, myPos.getY()+rawYMov);
+    }
     
 }
 

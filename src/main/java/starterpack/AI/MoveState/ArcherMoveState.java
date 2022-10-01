@@ -3,6 +3,7 @@ package starterpack.AI.MoveState;
 import java.util.List;
 
 import starterpack.AI.Utils.Utils;
+import starterpack.game.CharacterClass;
 import starterpack.game.GameState;
 import starterpack.game.PlayerState;
 import starterpack.game.Position;
@@ -24,11 +25,30 @@ public class ArcherMoveState extends IMoveState{
     public Position Move() {
         List<PlayerState> playerStateList = Utils.GetDangerousPlayerState(this);
         if(playerStateList == null||playerStateList.size()==0){
-
+            PlayerState target = GetNearestAttackPlayerState(playerStateList);
+  
         }
-        for(PlayerState playerState:playerStateList){
-
+        else{
+            for(PlayerState playerState:playerStateList){
+                PlayerState target = GetHighestAttackPlayerState(playerStateList);
+                //int rangeArray[] = new int[4];
+                //rangeArray = Util.GetRangeBox();
+                
+                switch(target.getCharacterClass()){
+                    //if Archer, then move to the places where
+                    case ARCHER:
+                        break;
+                    case KNIGHT:
+                        
+                        break;
+                    case WIZARD:
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
+
         return new Position(0,0);
     }
 
