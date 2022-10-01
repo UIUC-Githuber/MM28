@@ -1,8 +1,8 @@
-package starterpack.AI.ItemState;
+package starterpack.AI.BuyState;
 
 import starterpack.AI.AIState;
 import starterpack.game.Item;
 
-public abstract class IItemState extends AIState{
+public abstract class IBuyState extends AIState{
     public abstract void Buy(Item item);
 }
